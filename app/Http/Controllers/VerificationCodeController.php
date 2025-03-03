@@ -4,14 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ServerErrorException;
 use App\Exceptions\VerificationCodeException;
-use App\Http\Controllers\Controller;
-
 use App\Http\Requests\VerificationCode\CheckVerificationCode;
 use App\Http\Requests\VerificationCode\SendVerificationCodeRequest;
 use App\Jobs\SendVerificationCode;
 use App\Services\VerificationCodeService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 
 class VerificationCodeController extends Controller
 {

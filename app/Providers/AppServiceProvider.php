@@ -4,25 +4,21 @@ namespace App\Providers;
 
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-use Illuminate\Http\Request;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
+
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
+
     public function boot(): void
     {
         $this->observers();
@@ -33,10 +29,7 @@ class AppServiceProvider extends ServiceProvider
         $this->PassWordConfigurations();
     }
 
-    private function observers(): void
-    {
-
-    }
+    private function observers(): void {}
 
     private function rateLimiters(): void
     {
@@ -61,7 +54,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $apiRouteFiles = [
             'auth.php',
-            'googleAuth.php'
+            'user.php',
+            'googleAuth.php',
         ];
         foreach ($apiRouteFiles as $routeFile) {
             Route::prefix('api')
@@ -72,8 +66,8 @@ class AppServiceProvider extends ServiceProvider
 
     private function productionConfigurations(): void
     {
-        Model::shouldBeStrict(!app()->environment('production'));
-        Model::preventLazyLoading(!app()->environment('production'));
+        Model::shouldBeStrict(! app()->environment('production'));
+        Model::preventLazyLoading(! app()->environment('production'));
 
     }
 

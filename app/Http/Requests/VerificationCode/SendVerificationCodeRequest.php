@@ -30,9 +30,9 @@ class SendVerificationCodeRequest extends FormRequest
                     ['unique:users,email'],
                     ['exists:users,email']
                 ), ],
-            'registration' => ['required' ,
-                ///todo  it must be boolean type
-                ],
+            'registration' => ['required',
+                // /todo  it must be boolean type
+            ],
         ];
 
     }

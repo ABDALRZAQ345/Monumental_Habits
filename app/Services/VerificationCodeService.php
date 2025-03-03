@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Exceptions\VerificationCodeException;
-use App\Jobs\SendVerificationCode;
 use App\Mail\SendEmail;
 use App\Models\VerificationCode;
 use Illuminate\Support\Facades\Hash;
@@ -11,21 +10,20 @@ use Illuminate\Support\Facades\Mail;
 
 class VerificationCodeService
 {
+    public static function Send($email): void
+    {
+        $code = rand(100000, 999999);
 
-  public static function Send($email): void
-  {
-      $code = rand(100000, 999999);
+        VerificationCode::create([
+            'email' => $email,
+            'code' => Hash::make($code),
+            'expires_at' => now()->addMinutes(30),
+        ]);
 
-      VerificationCode::create([
-          'email' => $email,
-          'code' => Hash::make($code),
-          'expires_at' => now()->addMinutes(30),
-      ]);
-
-      $message= " code : {$code}" ;
-      $subject= "Verification Code";
-      Mail::to($email)->send(new SendEmail($message,$subject));
-  }
+        $message = " code : {$code}";
+        $subject = 'Verification Code';
+        Mail::to($email)->send(new SendEmail($message, $subject));
+    }
 
     /**
      * @throws VerificationCodeException
@@ -42,6 +40,7 @@ class VerificationCodeService
         }
 
     }
+
     /**
      * @throws VerificationCodeException
      */
@@ -54,6 +53,4 @@ class VerificationCodeService
         )->delete();
 
     }
-
-
 }

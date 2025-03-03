@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Exceptions\ServerErrorException;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignupRequest;
@@ -11,9 +10,7 @@ use App\Models\User;
 use App\Services\UserService;
 use App\Services\VerificationCodeService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Mockery\Exception;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -29,6 +26,7 @@ class AuthController extends Controller
     /**
      * @throws ServerErrorException
      * @throws \App\Exceptions\VerificationCodeException
+     * @throws \Throwable
      */
     public function register(SignupRequest $request): JsonResponse
     {
@@ -38,13 +36,14 @@ class AuthController extends Controller
         try {
             db::beginTransaction();
             $user = UserService::createUser($validated);
-            $this->verificationCodeService->delete($validated['email']); //todo add that to observer
+            $this->verificationCodeService->delete($validated['email']); // todo add that to observer
             db::commit();
+
             return response()->json([
                 'status' => true,
                 'message' => 'User Created Successfully',
                 'token' => JWTAuth::fromUser($user),
-                'user' => UserResource::make($user) ,
+                'user' => UserResource::make($user),
             ]);
         } catch (\Exception $e) {
             db::rollBack();
@@ -54,6 +53,7 @@ class AuthController extends Controller
 
     /**
      * @throws ServerErrorException
+     * @throws \Throwable
      */
     public function login(LoginRequest $request): JsonResponse
     {
@@ -62,7 +62,7 @@ class AuthController extends Controller
 
         try {
             db::beginTransaction();
-            if (!$token = JWTAuth::attempt($credentials)) {
+            if (! $token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'invalid email or password '], 401);
             }
             User::where('email', $credentials['email'])->update(['fcm_token' => $request->get('fcm_token')]);
@@ -72,12 +72,10 @@ class AuthController extends Controller
             throw new ServerErrorException($e->getMessage());
         }
 
-
         return response()->json([
-               'status' => true,
-               'token' => $token,
-           ]);
-
+            'status' => true,
+            'token' => $token,
+        ]);
 
     }
 
@@ -96,22 +94,5 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());
         }
-    }
-
-    /**
-     * @throws ServerErrorException
-     */
-    public function profile(): JsonResponse
-    {
-        try {
-            return response()->json([
-                'status' => true,
-                'user' => UserResource::make(Auth::user()),
-            ]);
-        }
-        catch (Exception $e) {
-            throw new ServerErrorException($e->getMessage());
-        }
-
     }
 }

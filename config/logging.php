@@ -125,7 +125,7 @@ return [
 
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
-            'level' => 'error'
+            'level' => 'error',
         ],
         'verification_code' => [
             'driver' => 'single',

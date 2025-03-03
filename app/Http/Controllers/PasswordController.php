@@ -13,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PasswordController extends Controller
 {
@@ -26,6 +27,7 @@ class PasswordController extends Controller
     /**
      * @throws ServerErrorException
      * @throws VerificationCodeException
+     * @throws \Throwable
      */
     public function forget(ForgetPasswordRequest $request): JsonResponse
     {
@@ -38,12 +40,14 @@ class PasswordController extends Controller
             $user = User::where('email', $validated['email'])->firstOrFail();
 
             UserService::updatePassword($user, $validated['password']);
-
+            $token=JWTAuth::fromUser($user);
             $this->verificationCodeService->delete($validated['email']);
             db::commit();
+
             return response()->json([
                 'status' => true,
                 'message' => 'Password changed successfully!',
+                'token' => $token,
             ]);
         } catch (\Exception $e) {
             db::rollBack();
@@ -53,12 +57,12 @@ class PasswordController extends Controller
 
     /**
      * @throws ServerErrorException
+     * @throws \Throwable
      */
     public function reset(ResetPasswordRequest $request): JsonResponse
     {
 
         $validated = $request->validated();
-
 
         try {
             db::beginTransaction();
@@ -67,13 +71,13 @@ class PasswordController extends Controller
 
                 UserService::updatePassword($user, $validated['new_password']);
                 db::commit();
+
                 return response()->json([
                     'status' => true,
                     'message' => 'Password reset successfully!',
                 ]);
             }
-            throw  new ServerErrorException('Wrong old password!');
-
+            throw new ServerErrorException('Wrong old password!');
         } catch (\Exception $e) {
             db::rollBack();
             throw new ServerErrorException($e->getMessage());

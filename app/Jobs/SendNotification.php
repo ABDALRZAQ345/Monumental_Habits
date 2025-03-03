@@ -12,7 +12,15 @@ class SendNotification implements ShouldQueue
 {
     use Queueable;
 
-    protected $user , $title, $body, $data, $messaging;
+    protected $user;
+
+    protected $title;
+
+    protected $body;
+
+    protected $data;
+
+    protected $messaging;
 
     public function __construct($user, $title, $body, $data = [])
     {
@@ -23,7 +31,7 @@ class SendNotification implements ShouldQueue
 
     }
 
-    public function handle():void
+    public function handle(): void
     {
         $firebase = (new Factory)
             ->withServiceAccount(base_path(env('FIREBASE_CREDENTIALS')));

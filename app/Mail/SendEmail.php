@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -16,13 +15,14 @@ class SendEmail extends Mailable
     /**
      * Create a new message instance.
      */
-    public string $body,$title;
+    public string $body;
 
+    public string $title;
 
-    public function __construct($body,$title)
+    public function __construct($body, $title)
     {
-        $this->body=$body;
-        $this->title=$title;
+        $this->body = $body;
+        $this->title = $title;
     }
 
     /**

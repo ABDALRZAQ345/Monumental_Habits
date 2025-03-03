@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\ValidPhoneNumber;
-use Egulias\EmailValidator\Result\ValidEmail;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -27,10 +25,10 @@ class SignupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['required', 'max:50'],
+            'first_name' => ['required', 'string', 'max:50'],
             'last_name' => ['nullable', 'max:50'],
-            'password' => ['required', 'confirmed', Password::defaults(),'max:40'],
-            'email' => ['required',  'email:dns','unique:users,email'],
+            'password' => ['required', 'confirmed', Password::defaults(), 'max:40'],
+            'email' => ['required',  'email:dns', 'unique:users,email'],
             'photo' => ['nullable', 'image', 'max:3072'],
             'code' => ['required', 'numeric', 'digits:6'],
             'fcm_token' => ['nullable', 'string'],

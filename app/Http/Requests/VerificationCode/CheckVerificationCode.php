@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\VerificationCode;
 
-
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -25,7 +24,7 @@ class CheckVerificationCode extends FormRequest
         $isRegistration = filter_var($this->input('registration'), FILTER_VALIDATE_BOOLEAN);
 
         return [
-            'email' => ['required', 'email:dns',Rule::when(
+            'email' => ['required', 'email:dns', Rule::when(
                 $isRegistration,
                 ['unique:users,email'],
                 ['exists:users,email']

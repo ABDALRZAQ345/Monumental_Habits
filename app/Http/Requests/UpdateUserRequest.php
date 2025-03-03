@@ -5,9 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\Rules\Password;
 
-class LoginRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +24,9 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'password' => ['required', Password::defaults()],
-            'email' => ['required', 'email:dns', 'exists:users,email'],
-            'fcm_token' => ['nullable', 'string'],
+            'first_name' => ['required', 'max:50'],
+            'last_name' => ['nullable', 'max:50'],
+            'photo' => ['nullable', 'image', 'max:3072'],
         ];
     }
 

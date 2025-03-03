@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Password;
 
-use App\Rules\ValidPhoneNumber;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -26,7 +25,7 @@ class ForgetPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required','email:dns','exists:users,email'],
+            'email' => ['required', 'email:dns', 'exists:users,email'],
             'password' => ['required', Password::defaults(), 'confirmed'],
             'code' => ['required', 'numeric', 'digits:6'],
         ];

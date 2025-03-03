@@ -27,6 +27,7 @@ class FcmTokenRequest extends FormRequest
             'fcm_token' => ['required', 'string', 'max:255'],
         ];
     }
+
     public function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(

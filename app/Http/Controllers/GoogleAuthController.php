@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ServerErrorException;
 use App\Models\User;
-use GuzzleHttp\Exception\ServerException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,13 +16,13 @@ class GoogleAuthController extends Controller
     /**
      * @throws ServerErrorException
      */
-    function handleGoogleUser($idToken): JsonResponse
+    public function handleGoogleUser($idToken): JsonResponse
     {
-        try{
+        try {
             db::beginTransaction();
             $googleUser = Http::get("https://oauth2.googleapis.com/tokeninfo?id_token={$idToken}")->json();
 
-            if (!isset($googleUser['email'])) {
+            if (! isset($googleUser['email'])) {
                 return response()->json(['error' => 'Invalid Google ID token'], 401);
             }
 
@@ -38,12 +37,12 @@ class GoogleAuthController extends Controller
 
             $token = JWTAuth::fromUser($user);
             db::commit();
+
             return response()->json([
                 'status' => true,
-                'token' => $token
+                'token' => $token,
             ]);
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             db::rollBack();
             throw new ServerErrorException($e->getMessage());
         }
@@ -57,13 +56,11 @@ class GoogleAuthController extends Controller
     {
         $idToken = $request->input('id_token');
 
-        if (!$idToken) {
+        if (! $idToken) {
             return response()->json(['error' => 'No token provided'], 400);
         }
 
         return $this->handleGoogleUser($idToken);
 
     }
-
-
 }

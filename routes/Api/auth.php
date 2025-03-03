@@ -1,15 +1,10 @@
 <?php
 
-
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FcmTokenController;
 use App\Http\Controllers\PasswordController;
-
-
 use App\Http\Controllers\VerificationCodeController;
 use Illuminate\Support\Facades\Route;
-use Laravel\Socialite\Facades\Socialite;
-
 
 Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
 
@@ -32,6 +27,5 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
         Route::post('/send_fcm', [FcmTokenController::class, 'send'])->name('fcm.send');
 
     });
-
 
 });
