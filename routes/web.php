@@ -23,8 +23,8 @@ Route::get('/auth/google/callback', function () {
     $user = User::updateOrCreate([
         'google_id' => $googleUser->id,
     ], [
-        'first_name' => $googleUser->name,
-        'last_name' => ' ',
+        'name' => $googleUser->name,
+
         'email' => $googleUser->email,
         'password' => Hash::make(str()->random(24)),
     ]);

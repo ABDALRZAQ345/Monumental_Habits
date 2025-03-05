@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
  * @property int $id
- * @property string $first_name
- * @property string $last_name
+ * @property string $name
  * @property string $email
  * @property string $password
  * @property string|null $google_id
@@ -51,7 +51,7 @@ class User extends Authenticatable implements JWTSubject
      * @var list<string>
      */
     protected $fillable =
-        ['first_name', 'email', 'password', 'last_name', 'fcm_token', 'photo', 'google_id'];
+        ['name', 'email', 'password', 'fcm_token', 'photo', 'google_id'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -76,19 +76,18 @@ class User extends Authenticatable implements JWTSubject
         ];
     }
 
-    /**
-     * @return mixed
-     */
-    public function getJWTIdentifier()
+    public function getJWTIdentifier(): mixed
     {
         return $this->getKey();
     }
 
-    /**
-     * @return array
-     */
-    public function getJWTCustomClaims()
+    public function getJWTCustomClaims(): array
     {
         return [];
+    }
+
+    public function habits(): HasMany
+    {
+        return $this->hasMany(Habit::class);
     }
 }

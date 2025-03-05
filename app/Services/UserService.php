@@ -11,8 +11,7 @@ class UserService
     public static function createUser(array $data): User
     {
         $user = User::create([
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'] ?? null,
+            'name' => $data['name'],
             'password' => Hash::make($data['password']),
             'fcm_token' => $data['fcm_token'] ?? null,
             'email' => $data['email'],
@@ -40,8 +39,7 @@ class UserService
         }
 
         $user->update([
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'] ?? null,
+            'name' => $data['name'],
             'photo' => $data['photo'] ?? $user->photo,
         ]);
 

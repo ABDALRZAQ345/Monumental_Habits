@@ -11,10 +11,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class GoogleAuthController extends Controller
+class GoogleAuthController extends BaseController
 {
     /**
      * @throws ServerErrorException
+     * @throws \Throwable
      */
     public function handleGoogleUser($idToken): JsonResponse
     {
@@ -29,8 +30,7 @@ class GoogleAuthController extends Controller
             $user = User::firstOrCreate([
                 'email' => $googleUser['email'],
             ], [
-                'first_name' => $googleUser['name'],
-                'last_name' => ' ',
+                'name' => $googleUser['name'],
                 'google_id' => $googleUser['sub'],
                 'password' => Hash::make(str()->random(24)),
             ]);

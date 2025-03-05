@@ -38,6 +38,9 @@ class VerificationCodeService
         if ($verificationCode->isExpired()) {
             throw new VerificationCodeException('Expired code');
         }
+        $verificationCode->verified_at = now();
+        $verificationCode->expires_at = now()->addMinutes(60);
+        $verificationCode->save();
 
     }
 

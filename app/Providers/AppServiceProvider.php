@@ -12,18 +12,16 @@ use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
 {
-
     public function register(): void
     {
         //
     }
 
-
     public function boot(): void
     {
         $this->observers();
         $this->rateLimiters();
-        //  $this->meilisearch();
+
         $this->routes();
         $this->productionConfigurations();
         $this->PassWordConfigurations();
@@ -56,6 +54,7 @@ class AppServiceProvider extends ServiceProvider
             'auth.php',
             'user.php',
             'googleAuth.php',
+            'habits.php',
         ];
         foreach ($apiRouteFiles as $routeFile) {
             Route::prefix('api')

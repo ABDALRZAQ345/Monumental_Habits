@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
     protected VerificationCodeService $verificationCodeService;
 
@@ -94,5 +94,16 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());
         }
+    }
+
+    public function refresh(): JsonResponse
+    {
+        $token = auth()->refresh();
+
+        return response()->json([
+            'status' => true,
+            'token' => $token,
+        ]);
+
     }
 }

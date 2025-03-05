@@ -10,7 +10,7 @@ use App\Jobs\SendVerificationCode;
 use App\Services\VerificationCodeService;
 use Illuminate\Http\JsonResponse;
 
-class VerificationCodeController extends Controller
+class VerificationCodeController extends BaseController
 {
     //
     protected VerificationCodeService $verificationCodeService;

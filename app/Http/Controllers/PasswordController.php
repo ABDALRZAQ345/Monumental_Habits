@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class PasswordController extends Controller
+class PasswordController extends BaseController
 {
     protected VerificationCodeService $verificationCodeService;
 
@@ -40,7 +40,7 @@ class PasswordController extends Controller
             $user = User::where('email', $validated['email'])->firstOrFail();
 
             UserService::updatePassword($user, $validated['password']);
-            $token=JWTAuth::fromUser($user);
+            $token = JWTAuth::fromUser($user);
             $this->verificationCodeService->delete($validated['email']);
             db::commit();
 

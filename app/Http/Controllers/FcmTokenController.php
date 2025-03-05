@@ -7,7 +7,7 @@ use App\Http\Requests\FcmTokenRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
-class FcmTokenController extends Controller
+class FcmTokenController extends BaseController
 {
     /**
      * @throws ServerErrorException
