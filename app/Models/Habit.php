@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Habit extends Model
 {
@@ -25,5 +27,13 @@ class Habit extends Model
         ];
 
         return array_values(array_filter($map, fn ($bit) => ($this->days & $bit) !== 0, ARRAY_FILTER_USE_KEY));
+    }
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function habit_logs(): HasMany
+    {
+        return $this->hasMany(HabitLog::class);
     }
 }

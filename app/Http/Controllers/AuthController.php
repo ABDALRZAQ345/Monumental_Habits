@@ -57,7 +57,7 @@ class AuthController extends BaseController
      */
     public function login(LoginRequest $request): JsonResponse
     {
-
+        $validated = $request->validated();
         $credentials = $request->only('email', 'password');
 
         try {
@@ -65,7 +65,10 @@ class AuthController extends BaseController
             if (! $token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'invalid email or password '], 401);
             }
-            User::where('email', $credentials['email'])->update(['fcm_token' => $request->get('fcm_token')]);
+            $user=User::where('email', $credentials['email'])->update([
+                'fcm_token' => $validated['fcm_token'],
+                'timezone' => $validated['timezone'],
+            ]);
             db::commit();
         } catch (JWTException $e) {
             db::rollBack();
@@ -74,6 +77,7 @@ class AuthController extends BaseController
 
         return response()->json([
             'status' => true,
+            'user' => UserResource::make($user),
             'token' => $token,
         ]);
 

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ServerErrorException;
+use App\Http\Requests\TimeZoneRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 use Mockery\Exception;
 
 class UserController extends BaseController
@@ -51,4 +53,27 @@ class UserController extends BaseController
         }
 
     }
+
+    /**
+     * @throws ServerErrorException
+     */
+    public function timezone(TimeZoneRequest $request): JsonResponse
+    {
+       $validated=$request->validated();
+        try{
+            $user=Auth::user();
+            $user->update([
+                'timezone' => $validated['timezone'],
+            ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'timezone updated successfully',
+            ]);
+        }
+        catch (Exception $e) {
+            throw new ServerErrorException($e->getMessage());
+        }
+
+    }
+
 }

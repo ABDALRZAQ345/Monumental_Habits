@@ -10,15 +10,14 @@ class UserService
 {
     public static function createUser(array $data): User
     {
-        $user = User::create([
+        return User::create([
             'name' => $data['name'],
             'password' => Hash::make($data['password']),
             'fcm_token' => $data['fcm_token'] ?? null,
             'email' => $data['email'],
             'photo' => isset($data['photo']) ? NewPublicPhoto($data['photo'], 'profiles') : null,
+            'timezone' => $data['timezone'],
         ]);
-
-        return $user;
     }
 
     public static function updatePassword($user, $newPassword): void

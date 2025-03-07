@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Habit;
+use App\Observers\HabitObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -27,7 +29,9 @@ class AppServiceProvider extends ServiceProvider
         $this->PassWordConfigurations();
     }
 
-    private function observers(): void {}
+    private function observers(): void {
+        Habit::observe(HabitObserver::class);
+    }
 
     private function rateLimiters(): void
     {

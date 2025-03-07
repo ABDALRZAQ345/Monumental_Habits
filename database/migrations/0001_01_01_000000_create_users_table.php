@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('google_id')->nullable()->unique();
             $table->string('fcm_token')->nullable();
             $table->string('photo', 500)->nullable();
+            $table->string('timezone')->default('UTC');
             $table->rememberToken();
             $table->timestamps();
         });

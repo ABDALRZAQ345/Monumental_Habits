@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -51,7 +52,7 @@ class User extends Authenticatable implements JWTSubject
      * @var list<string>
      */
     protected $fillable =
-        ['name', 'email', 'password', 'fcm_token', 'photo', 'google_id'];
+        ['name','timezone', 'email', 'password', 'fcm_token', 'photo', 'google_id'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -89,5 +90,9 @@ class User extends Authenticatable implements JWTSubject
     public function habits(): HasMany
     {
         return $this->hasMany(Habit::class);
+    }
+    public function habitLogs(): HasManyThrough
+    {
+        return $this->hasManyThrough(HabitLog::class, Habit::class);
     }
 }

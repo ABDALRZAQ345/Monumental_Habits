@@ -28,6 +28,7 @@ class LoginRequest extends FormRequest
             'password' => ['required', Password::defaults()],
             'email' => ['required', 'email:dns', 'exists:users,email'],
             'fcm_token' => ['nullable', 'string'],
+            'timezone' => ['required', 'string','timezone'],
         ];
     }
 
