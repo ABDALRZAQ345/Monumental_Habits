@@ -3,33 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ServerErrorException;
-use App\Http\Requests\StoreHabitRequest;
+use App\Http\Requests\Habit\StoreHabitRequest;
 use App\Http\Resources\HabitResource;
 use App\Models\Habit;
-use App\Services\HabitLogService;
 use App\Services\HabitService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 
 class HabitController extends BaseController
 {
-
-
     /**
      * @throws ServerErrorException
      */
     public function index(): JsonResponse
     {
         try {
-            $user=\Auth::user();
-            $habits= $user->habits;
+            $user = \Auth::user();
+            $habits = $user->habits;
+
             return response()->json([
                 'status' => true,
                 'message' => 'Habit created successfully',
-                'habits' => HabitResource::collection($habits)
+                'habits' => HabitResource::collection($habits),
             ]);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());
         }
     }
@@ -40,21 +36,19 @@ class HabitController extends BaseController
      */
     public function store(StoreHabitRequest $request): JsonResponse
     {
+        $validated = $request->validated();
         try {
-            db::beginTransaction();
-            $user=\Auth::user();
-            $validated = $request->validated();
-            $habit = HabitService::store($user,$validated);
 
-            db::commit();
+            $user = \Auth::user();
+            $habit = HabitService::store($user, $validated);
+
             return response()->json([
                 'status' => true,
                 'message' => 'Habit created successfully',
                 'habit' => habitResource::make($habit),
             ]);
-        }
-        catch (\Exception $e) {
-            db::rollBack();
+        } catch (\Exception $e) {
+
             throw new ServerErrorException($e->getMessage());
         }
 
@@ -68,20 +62,17 @@ class HabitController extends BaseController
     {
         $validated = $request->validated();
         try {
-            db::beginTransaction();
-            $user=\Auth::user();
-            $habit=$user->habits()->findOrFail($habit->id);
-            $habit=HabitService::update($habit,$validated);
 
-            db::commit();
+            $user = \Auth::user();
+            $habit = $user->habits()->findOrFail($habit->id);
+            $habit = HabitService::update($habit, $validated);
+
             return response()->json([
                 'status' => true,
                 'message' => 'Habit updated successfully',
                 'habit' => habitResource::make($habit),
             ]);
-        }
-        catch (\Exception $e) {
-            db::rollBack();
+        } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());
         }
 
@@ -93,15 +84,15 @@ class HabitController extends BaseController
     public function delete(Habit $habit): JsonResponse
     {
         try {
-            $user=\Auth::user();
-            $habit=$user->habits()->findOrFail($habit->id);
+            $user = \Auth::user();
+            $habit = $user->habits()->findOrFail($habit->id);
             $habit->delete();
+
             return response()->json([
                 'status' => true,
-               'message' => 'Habit deleted successfully',
+                'message' => 'Habit deleted successfully',
             ]);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());
         }
     }
@@ -112,13 +103,14 @@ class HabitController extends BaseController
     public function show(Habit $habit): JsonResponse
     {
         try {
-            $user=\Auth::user();
+            $user = \Auth::user();
             $user->habits()->findOrFail($habit->id);
 
-            $longest_streak=0;//todo
-            $current_streak=0;//todo
-            $complete_rate=0; // todo
-            $easiness = 0 ; // todo
+            $longest_streak = 0; // todo
+            $current_streak = 0; // todo
+            $complete_rate = 0; // todo
+            $easiness = 0; // todo
+
             /*
              * 0 -25 hard
              * 25 -50 midium
@@ -133,8 +125,7 @@ class HabitController extends BaseController
                 'complete_rate' => $complete_rate,
                 'easiness' => $easiness,
             ]);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());
         }
 

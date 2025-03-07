@@ -20,7 +20,7 @@ class GoogleAuthController extends BaseController
     public function handleGoogleUser($idToken): JsonResponse
     {
         try {
-            db::beginTransaction();
+            DB::beginTransaction();
             $googleUser = Http::get("https://oauth2.googleapis.com/tokeninfo?id_token={$idToken}")->json();
 
             if (! isset($googleUser['email'])) {
@@ -36,14 +36,14 @@ class GoogleAuthController extends BaseController
             ]);
 
             $token = JWTAuth::fromUser($user);
-            db::commit();
+            DB::commit();
 
             return response()->json([
                 'status' => true,
                 'token' => $token,
             ]);
         } catch (\Exception $e) {
-            db::rollBack();
+            DB::rollBack();
             throw new ServerErrorException($e->getMessage());
         }
 
@@ -51,6 +51,7 @@ class GoogleAuthController extends BaseController
 
     /**
      * @throws ServerErrorException
+     * @throws \Throwable
      */
     public function auth(Request $request): JsonResponse
     {

@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Habit;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\Rules\Password;
 
-class SignupRequest extends FormRequest
+class StoreHabitRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,13 +25,24 @@ class SignupRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'password' => ['required', 'confirmed', Password::defaults(), 'max:40'],
-            'email' => ['required',  'email:dns', 'unique:users,email'],
-            'photo' => ['nullable', 'image', 'max:3072'],
-            'code' => ['required', 'numeric', 'digits:6'],
-            'fcm_token' => ['nullable', 'string'],
-            'timezone' => ['required', 'string','timezone'],
+            'days' => ['required', 'array'],
+            'days.*' => ['required', 'in:Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday'],
+            'reminder_time' => ['nullable', 'date-format:H:i'],
+            'notifications_enabled' => ['boolean'],
         ];
+    }
+
+    public function withValidator($validator): void
+    {
+        $validator->after(function ($validator) {
+            $user = auth()->user();
+            if ($user && $user->habits()->count() >= config('app.data.max_habits')) {
+                $validator->errors()->add(
+                    'max_habits',
+                    'Sorry, you can’t add more than '.config('app.data.max_habits').' habits.'
+                );
+            }
+        });
     }
 
     public function failedValidation(Validator $validator)

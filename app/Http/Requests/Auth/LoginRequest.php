@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,7 +28,7 @@ class LoginRequest extends FormRequest
             'password' => ['required', Password::defaults()],
             'email' => ['required', 'email:dns', 'exists:users,email'],
             'fcm_token' => ['nullable', 'string'],
-            'timezone' => ['required', 'string','timezone'],
+            'timezone' => ['required', 'string', 'timezone'],
         ];
     }
 

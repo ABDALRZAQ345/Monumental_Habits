@@ -33,7 +33,7 @@ class VerificationCodeService
         $verificationCode = VerificationCode::where('email', $email)->first();
 
         if (! $verificationCode || ! Hash::check($code, $verificationCode->code)) {
-            throw new VerificationCodeException;
+            throw new VerificationCodeException('incorrect code');
         }
         if ($verificationCode->isExpired()) {
             throw new VerificationCodeException('Expired code');

@@ -3,24 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ServerErrorException;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\SignupRequest;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\SignupRequest;
 use App\Http\Resources\UserResource;
-use App\Models\User;
-use App\Services\UserService;
+use App\Services\AuthService;
 use App\Services\VerificationCodeService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends BaseController
 {
     protected VerificationCodeService $verificationCodeService;
 
-    public function __construct(VerificationCodeService $verificationCodeService)
+    protected AuthService $authService;
+
+    public function __construct(VerificationCodeService $verificationCodeService, AuthService $authService)
     {
         $this->verificationCodeService = $verificationCodeService;
+        $this->authService = $authService;
     }
 
     /**
@@ -31,24 +31,16 @@ class AuthController extends BaseController
     public function register(SignupRequest $request): JsonResponse
     {
         $validated = $request->validated();
-        $this->verificationCodeService->Check($validated['email'], $validated['code']);
 
-        try {
-            db::beginTransaction();
-            $user = UserService::createUser($validated);
-            $this->verificationCodeService->delete($validated['email']); // todo add that to observer
-            db::commit();
+        $user = $this->authService->attemptRegister($validated);
 
-            return response()->json([
-                'status' => true,
-                'message' => 'User Created Successfully',
-                'token' => JWTAuth::fromUser($user),
-                'user' => UserResource::make($user),
-            ]);
-        } catch (\Exception $e) {
-            db::rollBack();
-            throw new ServerErrorException($e->getMessage());
-        }
+        return response()->json([
+            'status' => true,
+            'message' => 'User Created Successfully',
+            'token' => JWTAuth::fromUser($user),
+            'user' => UserResource::make($user),
+        ]);
+
     }
 
     /**
@@ -57,27 +49,12 @@ class AuthController extends BaseController
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        $validated = $request->validated();
         $credentials = $request->only('email', 'password');
 
-        try {
-            db::beginTransaction();
-            if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid email or password '], 401);
-            }
-            $user=User::where('email', $credentials['email'])->update([
-                'fcm_token' => $validated['fcm_token'],
-                'timezone' => $validated['timezone'],
-            ]);
-            db::commit();
-        } catch (JWTException $e) {
-            db::rollBack();
-            throw new ServerErrorException($e->getMessage());
-        }
+        $token = $this->authService->attemptLogin($credentials, $request->validated());
 
         return response()->json([
             'status' => true,
-            'user' => UserResource::make($user),
             'token' => $token,
         ]);
 

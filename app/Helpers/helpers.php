@@ -1,6 +1,5 @@
 <?php
 
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 if (! function_exists('NewPublicPhoto')) {
@@ -20,4 +19,3 @@ if (! function_exists('DeletePublicPhoto')) {
     }
 
 }
-

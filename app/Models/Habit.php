@@ -14,6 +14,8 @@ class Habit extends Model
 
     protected $fillable = ['user_id', 'name',  'days', 'reminder_time', 'notifications_enabled'];
 
+    protected $hidden = ['user', 'created_at', 'updated_at'];
+
     public function getDays(): array
     {
         $map = [
@@ -28,10 +30,12 @@ class Habit extends Model
 
         return array_values(array_filter($map, fn ($bit) => ($this->days & $bit) !== 0, ARRAY_FILTER_USE_KEY));
     }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
     public function habit_logs(): HasMany
     {
         return $this->hasMany(HabitLog::class);

@@ -123,6 +123,6 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
     'data' => [
-       'max_habits' => env('APP_MAX_HABITS', 20),
+        'max_habits' => env('APP_MAX_HABITS', 20),
     ],
 ];

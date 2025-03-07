@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rules\Password;
 
-class UpdateUserRequest extends FormRequest
+class SignupRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +25,13 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'max:50'],
+            'name' => ['required', 'string', 'max:255'],
+            'password' => ['required', 'confirmed', Password::defaults(), 'max:40'],
+            'email' => ['required',  'email:dns', 'unique:users,email'],
             'photo' => ['nullable', 'image', 'max:3072'],
+            'code' => ['required', 'numeric', 'digits:6'],
+            'fcm_token' => ['nullable', 'string'],
+            'timezone' => ['required', 'string', 'timezone'],
         ];
     }
 

@@ -36,21 +36,19 @@ class PasswordController extends BaseController
         $this->verificationCodeService->Check($validated['email'], $validated['code']);
 
         try {
-            db::beginTransaction();
+            DB::beginTransaction();
             $user = User::where('email', $validated['email'])->firstOrFail();
-
             UserService::updatePassword($user, $validated['password']);
-            $token = JWTAuth::fromUser($user);
             $this->verificationCodeService->delete($validated['email']);
-            db::commit();
+            DB::commit();
 
             return response()->json([
                 'status' => true,
                 'message' => 'Password changed successfully!',
-                'token' => $token,
+                'token' => JWTAuth::fromUser($user),
             ]);
         } catch (\Exception $e) {
-            db::rollBack();
+            DB::rollBack();
             throw new ServerErrorException($e->getMessage());
         }
     }
@@ -65,12 +63,11 @@ class PasswordController extends BaseController
         $validated = $request->validated();
 
         try {
-            db::beginTransaction();
+
             $user = Auth::user();
             if (Hash::check($validated['old_password'], $user->password)) {
 
                 UserService::updatePassword($user, $validated['new_password']);
-                db::commit();
 
                 return response()->json([
                     'status' => true,
@@ -79,7 +76,6 @@ class PasswordController extends BaseController
             }
             throw new ServerErrorException('Wrong old password!');
         } catch (\Exception $e) {
-            db::rollBack();
             throw new ServerErrorException($e->getMessage());
         }
 

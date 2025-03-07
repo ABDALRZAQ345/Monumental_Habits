@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Habit;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class HabitPolicy
 {
@@ -27,7 +26,6 @@ class HabitPolicy
     /**
      * Determine whether the user can create models.
      */
-
     public function create(User $user): bool
     {
         return $user->habits()->count() < config('app.data.max_habits');

@@ -15,7 +15,6 @@ class SendVerificationCode implements ShouldQueue
      * Create a new job instance.
      */
     protected $email;
-
     protected $verification_code_service;
 
     public function __construct($email)

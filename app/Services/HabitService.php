@@ -25,6 +25,7 @@ class HabitService
 
         return $mask;
     }
+
     public static function store(User $user, array $data): Habit
     {
         return Habit::create([
@@ -36,14 +37,16 @@ class HabitService
         ]);
 
     }
+
     public static function update(Habit $habit, array $data): Habit
     {
         $habit->update([
-           'name' => $data['name'],
-           'days' => self::encodeDays($data['days']),
-           'reminder_time' => $data['reminder_time'],
-           'notifications_enabled' => $data['notifications_enabled'] ?? false,
+            'name' => $data['name'],
+            'days' => self::encodeDays($data['days']),
+            'reminder_time' => $data['reminder_time'],
+            'notifications_enabled' => $data['notifications_enabled'] ?? false,
         ]);
+
         return $habit;
     }
 }

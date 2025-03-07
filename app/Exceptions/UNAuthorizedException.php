@@ -7,7 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UNAUTHORIZED extends Exception
+class UNAuthorizedException extends Exception
 {
     public function __construct(string $message = 'UNAUTHORIZED')
     {

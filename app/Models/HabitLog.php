@@ -11,19 +11,14 @@ class HabitLog extends Model
 {
     /** @use HasFactory<\Database\Factories\HabitLogFactory> */
     use HasFactory;
-    protected $fillable = ['date','status','habit_id'];
+
+    protected $fillable = ['date', 'status', 'habit_id'];
+
+    protected $hidden = ['created_at', 'updated_at', 'habit'];
+
     public function habit(): BelongsTo
     {
         return $this->belongsTo(Habit::class);
     }
-//    public function setDateAttribute($value): void
-//    {
-//        $userTimezone = auth()->user()->timezone ?? 'UTC';
-//        $this->attributes['date'] = Carbon::parse($value, $userTimezone)->setTimezone('UTC');
-//    }
-//    public function getDateAttribute($value): Carbon
-//    {
-//        $userTimezone = auth()->user()->timezone ?? 'UTC';
-//        return Carbon::parse($value, 'UTC')->setTimezone($userTimezone);
-//    }
+
 }
