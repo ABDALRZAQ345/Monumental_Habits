@@ -15,7 +15,7 @@ class HabitLogService
         $userTimezone = $user->timezone ?? 'UTC';
 
         $logs = [];
-        $currentDate = now($userTimezone);
+        $currentDate = now($userTimezone)->startOfMonth();
 
         for ($i = 0; $i < 366; $i++) {
             $date = $currentDate->copy()->addDays($i)->toDateString();

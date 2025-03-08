@@ -12,6 +12,7 @@ class HabitLog extends Model
     /** @use HasFactory<\Database\Factories\HabitLogFactory> */
     use HasFactory;
 
+
     protected $fillable = ['date', 'status', 'habit_id'];
 
     protected $hidden = ['created_at', 'updated_at', 'habit'];
@@ -19,6 +20,23 @@ class HabitLog extends Model
     public function habit(): BelongsTo
     {
         return $this->belongsTo(Habit::class);
+    }
+    public function scopeOfWeek($query, $timezone = null)
+    {
+        $timezone = $timezone ?: config('app.timezone');
+        $startOfWeek = Carbon::now($timezone)->startOfWeek();
+        $endOfWeek   = Carbon::now($timezone)->endOfWeek();
+
+        return $query->whereBetween('date', [$startOfWeek, $endOfWeek]);
+    }
+
+    public function scopeOfMonth($query, $timezone = null)
+    {
+        $timezone = $timezone ?: config('app.timezone');
+        $startOfMonth = Carbon::now($timezone)->startOfMonth();
+        $endOfMonth   = Carbon::now($timezone)->endOfMonth();
+
+        return $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
     }
 
 }

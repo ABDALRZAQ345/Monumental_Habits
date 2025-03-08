@@ -5,6 +5,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['throttle:api', 'locale', 'xss', 'auth:api'])->group(function () {
 
-    Route::post('/habits/{habit}/logs', [HabitLogController::class, 'store']);
+    Route::post('/habits/{habit}/habit_logs/{habit_log}', [HabitLogController::class, 'update']);
 
 });
