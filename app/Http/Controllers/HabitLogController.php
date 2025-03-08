@@ -6,6 +6,7 @@ use App\Exceptions\BadRequestException;
 use App\Exceptions\ServerErrorException;
 use App\Models\Habit;
 use App\Models\HabitLog;
+use App\Services\HabitLogService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,16 @@ class HabitLogController extends Controller
     /**
      * @throws ServerErrorException
      */
-    public function update(Request $request, Habit $habit,HabitLog $habitLog): JsonResponse
+    protected  HabitLogService  $habitLogService;
+    public function __construct(HabitLogService $habitLogService)
+    {
+        $this->habitLogService = $habitLogService;
+    }
+
+    /**
+     * @throws ServerErrorException
+     */
+    public function update(Request $request, Habit $habit, HabitLog $habitLog): JsonResponse
     {
 
         $validated=$request->validate([
@@ -29,9 +39,7 @@ class HabitLogController extends Controller
                $message =($habitLog->date > now($user->timezone)->format('Y-m-d')) ? "future day" : "day off";
                throw  new BadRequestException("you cant edit habit log for this day its " . $message);
            }
-            $habitLog->update([
-                'status'=>$validated['status']
-            ]);
+        $this->habitLogService->UpdateHabitLogStatus($habitLog,$validated['status']);
            return response()->json([
                'status'=> true,
                'message'=>'log updated successfully'

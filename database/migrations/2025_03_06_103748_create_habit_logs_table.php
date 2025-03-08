@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('date'); // date for user
             $table->boolean('status')->nullable()->default(null);
             $table->index('date');
+            $table->integer('streak')->default(0);
             $table->timestamps();
         });
     }

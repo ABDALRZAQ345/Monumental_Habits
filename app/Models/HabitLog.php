@@ -13,7 +13,7 @@ class HabitLog extends Model
     use HasFactory;
 
 
-    protected $fillable = ['date', 'status', 'habit_id'];
+    protected $fillable = ['date', 'status', 'habit_id','streak'];
 
     protected $hidden = ['created_at', 'updated_at', 'habit'];
 

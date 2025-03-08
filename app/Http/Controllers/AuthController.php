@@ -49,6 +49,7 @@ class AuthController extends BaseController
      */
     public function login(LoginRequest $request): JsonResponse
     {
+
         $credentials = $request->only('email', 'password');
 
         $token = $this->authService->attemptLogin($credentials, $request->validated());

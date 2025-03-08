@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\Days;
 use App\Models\Habit;
 use App\Models\HabitLog;
+use Carbon\Carbon;
 
 class HabitLogService
 {
@@ -15,7 +16,7 @@ class HabitLogService
         $userTimezone = $user->timezone ?? 'UTC';
 
         $logs = [];
-        $currentDate = now($userTimezone)->startOfMonth();
+        $currentDate = now($userTimezone)->startOfYear();
 
         for ($i = 0; $i < 366; $i++) {
             $date = $currentDate->copy()->addDays($i)->toDateString();
@@ -35,7 +36,6 @@ class HabitLogService
         HabitLog::insert($logs);
     }
 
-    // /
     public function updateHabitLogs(Habit $habit): void
     {
         $user = $habit->user;
@@ -54,5 +54,100 @@ class HabitLogService
             ->where('date', '>=', $currentDate)
             ->whereNotIn(\DB::raw('DAYNAME(date)'), $days)
             ->update(['status' => null]);
+    }
+
+    public function UpdateHabitLogStatus($habitLog, bool $status): void
+    {
+        if ($status) {
+            $this->updateStatusAndStreak($habitLog, $status);
+            $this->updateNextLogsIfTrue($habitLog);
+        } else {
+            $this->updateNextLogsIfFalse($habitLog);
+            $this->updateStatusAndStreak($habitLog, $status);
+        }
+    }
+
+    public function updateStatusAndStreak($habitLog, bool $status): void
+    {
+        if ($status) {
+            $previousLog = HabitLog::where('habit_id', $habitLog->habit_id)
+                ->where('date', Carbon::parse($habitLog->date)->subDay())
+                ->where('status', 1)
+                ->first();
+            $habitLog->update([
+                'status' => true,
+                'streak' => $previousLog ? $previousLog->streak + 1 : 1,
+            ]);
+
+        } else {
+            $habitLog->update([
+                'status' => false,
+                'streak' => 0,
+            ]);
+        }
+
+    }
+
+    /**
+     * @param $habitLog
+     * @return void
+     */
+    public function updateNextLogsIfFalse($habitLog): void
+    {
+        $streakValue = $habitLog->streak;
+        $nextLogs = HabitLog::where('habit_id', $habitLog->habit_id)
+            ->where('date', '>', $habitLog->date)
+            ->where('status', 1)
+            ->orderBy('date', 'asc')
+            ->get();
+
+        $previousDate = Carbon::parse($habitLog->date);
+        if ($streakValue != 0)
+            foreach ($nextLogs as $log) {
+                $logDate = Carbon::parse($log->date);
+
+                if (!$logDate->isSameDay($previousDate->addDay())) {
+                    break;
+                }
+
+
+                $log->streak -= $streakValue;
+                $log->save();
+
+                $previousDate = $logDate;
+            }
+    }
+
+    /**
+     * @param $habitLog
+     * @return void
+     */
+    public function updateNextLogsIfTrue($habitLog): void
+    {
+//updating the next streaks
+        $nextLogs = HabitLog::where('habit_id', $habitLog->habit_id)
+            ->where('date', '>', $habitLog->date)
+            ->where('status', 1)
+            ->orderBy('date', 'asc')
+            ->get();
+
+        $streakValue = $habitLog->streak;
+        $previousDate = Carbon::parse($habitLog->date);
+
+        foreach ($nextLogs as $log) {
+            $logDate = Carbon::parse($log->date);
+
+
+            if (!$logDate->isSameDay($previousDate->addDay())) {
+                break;
+            }
+
+            $streakValue++;
+            if ($log->streak == $streakValue) break;
+            $log->streak = $streakValue;
+            $log->save();
+
+            $previousDate = $logDate;
+        }
     }
 }
