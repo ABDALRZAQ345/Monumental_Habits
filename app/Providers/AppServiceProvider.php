@@ -3,12 +3,17 @@
 namespace App\Providers;
 
 use App\Models\Habit;
+use App\Models\HabitLog;
 use App\Models\User;
 use App\Observers\HabitObserver;
 use App\Observers\UserObserver;
+use App\Policies\HabitLogPolicy;
+use App\Policies\HabitPolicy;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -25,10 +30,16 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->observers();
         $this->rateLimiters();
-
+        $this->GatesAndPolicies();
         $this->routes();
         $this->productionConfigurations();
         $this->PassWordConfigurations();
+    }
+
+    public function GatesAndPolicies()
+    {
+
+        Gate::define('update-log', [HabitLogPolicy::class, 'update']);
     }
 
     private function observers(): void

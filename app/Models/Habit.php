@@ -42,9 +42,55 @@ class Habit extends Model
         return $this->hasMany(HabitLog::class);
     }
 
-    public function getLongestStreak() :int
+    public function LongestStreak() :int
     {
         return $this->habit_logs()
             ->max('streak');
+    }
+
+    public function CompleteRate() : int
+    {
+        $user = $this->user;
+        $today = now($user->timezone)->toDateString();
+        $startDate = $this->created_at->toDateString();
+
+        $counts = $this->habit_logs()
+            ->whereBetween('date', [$startDate, $today])
+            ->whereNotNull('status')
+            ->selectRaw("
+            COUNT(CASE WHEN status = 1 THEN 1 END) as completed,
+            COUNT(*) as total
+        ")->first();
+
+        if (!$counts->total) {
+            return 0;
+        }
+
+        return (int) (($counts->completed * 100) / $counts->total);
+
+    }
+    public function  Easiness($completeRate=null): string
+    {
+
+        if(!$completeRate){
+            $completeRate = $this->CompleteRate();
+        }
+        return match (true) {
+            $completeRate >= 75 => "easy",
+            $completeRate >= 50 => "medium",
+            $completeRate >= 25 => "hard",
+            default => "very hard",
+        };
+
+    }
+
+    public function CurrentStreak() : int
+    {
+        $user=$this->user;
+        $todayLog=$this->habit_logs()->where('date',now($user->timezone)->format('Y-m-d'))->first();
+        if(!$todayLog){
+            return 0;
+        }
+        return $todayLog->streak;
     }
 }

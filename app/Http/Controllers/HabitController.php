@@ -6,8 +6,11 @@ use App\Exceptions\ServerErrorException;
 use App\Http\Requests\Habit\StoreHabitRequest;
 use App\Http\Resources\HabitResource;
 use App\Models\Habit;
+use App\Models\HabitLog;
 use App\Services\HabitService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 
 class HabitController extends BaseController
 {
@@ -60,11 +63,10 @@ class HabitController extends BaseController
      */
     public function update(StoreHabitRequest $request, Habit $habit): JsonResponse
     {
+        Gate::authorize('update', $habit);
         $validated = $request->validated();
         try {
 
-            $user = \Auth::user();
-            $habit = $user->habits()->findOrFail($habit->id);
             $habit = HabitService::update($habit, $validated);
 
             return response()->json([
@@ -80,12 +82,13 @@ class HabitController extends BaseController
 
     /**
      * @throws ServerErrorException
+     * @throws AuthorizationException
      */
     public function delete(Habit $habit): JsonResponse
     {
+        Gate::authorize('delete', $habit);
         try {
-            $user = \Auth::user();
-            $habit = $user->habits()->findOrFail($habit->id);
+
             $habit->delete();
 
             return response()->json([
@@ -99,31 +102,24 @@ class HabitController extends BaseController
 
     /**
      * @throws ServerErrorException
+     * @throws AuthorizationException
      */
     public function show(Habit $habit): JsonResponse
     {
+        Gate::authorize('view', $habit);
         try {
             $user = \Auth::user();
-            $user->habits()->findOrFail($habit->id);
+            $habit->load(['habit_logs' => function ($query) use ($user) {
+                $query->ofMonth($user->timezone);
+            }]);
 
-            $longest_streak = 0; // todo
-            $current_streak = 0; // todo
-            $complete_rate = 0; // todo
-            $easiness = 0; // todo
-
-            /*
-             * 0 -25 hard
-             * 25 -50 midium
-             * 50 -75 easy
-             * 75 -100 very easy
-             */
             return response()->json([
                 'status' => true,
                 'habit' => habitResource::make($habit),
-                'longest_streak' => $longest_streak,
-                'current_streak' => $current_streak,
-                'complete_rate' => $complete_rate,
-                'easiness' => $easiness,
+                'longest_streak' => $habit->LongestStreak(),
+                'current_streak' => $habit->CurrentStreak(),
+                'complete_rate' => $complete_rate =$habit->CompleteRate(),
+                'easiness' => $habit->Easiness($complete_rate),
             ]);
         } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());
