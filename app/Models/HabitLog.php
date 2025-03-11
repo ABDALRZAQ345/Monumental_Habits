@@ -15,7 +15,7 @@ class HabitLog extends Model
 
     protected $fillable = ['date', 'status', 'habit_id','streak'];
 
-    protected $hidden = ['created_at', 'updated_at', 'habit'];
+    protected $hidden = ['created_at', 'updated_at', 'habit','streak','habit_id'];
 
     public function habit(): BelongsTo
     {
@@ -30,11 +30,10 @@ class HabitLog extends Model
         return $query->whereBetween('date', [$startOfWeek, $endOfWeek]);
     }
 
-    public function scopeOfMonth($query, $timezone = null)
+    public function scopeOfMonth($query, $month, $year)
     {
-        $timezone = $timezone ?: config('app.timezone');
-        $startOfMonth = Carbon::now($timezone)->startOfMonth();
-        $endOfMonth   = Carbon::now($timezone)->endOfMonth();
+        $startOfMonth = Carbon::createFromDate($year, $month, 1)->startOfMonth();
+        $endOfMonth = Carbon::createFromDate($year, $month, 1)->endOfMonth();
 
         return $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
     }

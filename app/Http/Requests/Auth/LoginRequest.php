@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rules\Password;
 
+
 class LoginRequest extends FormRequest
 {
     /**
@@ -25,7 +26,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'password' => ['required', Password::defaults()],
+            'password' => ['required',  Password::defaults()],
             'email' => ['required', 'email:dns', 'exists:users,email'],
             'fcm_token' => ['nullable', 'string'],
             'timezone' => ['required', 'string', 'timezone'],

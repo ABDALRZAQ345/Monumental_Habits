@@ -28,12 +28,12 @@ class AuthService
             throw new UNAuthorizedException('Invalid email or password');
         }
 
-        DB::transaction(function () use ($validated) {
+
             User::where('email', $validated['email'])->update([
                 'fcm_token' => $validated['fcm_token'] ?? null,
                 'timezone' => $validated['timezone'],
             ]);
-        });
+
 
         return $token;
     }

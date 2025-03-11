@@ -29,9 +29,10 @@ class HabitLogController extends Controller
      * @throws ServerErrorException
      * @throws AuthorizationException
      */
-    public function update(Request $request, Habit $habit, HabitLog $habitLog): JsonResponse
+    public function update(Request $request, HabitLog $habitLog): JsonResponse
     {
-        Gate::authorize('update-log', [$habit,$habitLog]);
+
+        Gate::authorize('update-log', [$habit=$habitLog->habit,$habitLog]);
         $validated=$request->validate([
             'status' => ['required','boolean']
         ]);

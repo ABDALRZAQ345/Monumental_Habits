@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ServerErrorException;
 use App\Http\Requests\Habit\StoreHabitRequest;
+use App\Http\Requests\ShowHabitRequest;
 use App\Http\Resources\HabitResource;
 use App\Models\Habit;
 use App\Models\HabitLog;
 use App\Services\HabitService;
+use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+
 
 class HabitController extends BaseController
 {
@@ -104,13 +108,20 @@ class HabitController extends BaseController
      * @throws ServerErrorException
      * @throws AuthorizationException
      */
-    public function show(Habit $habit): JsonResponse
+    public function show(ShowHabitRequest $request,Habit $habit): JsonResponse
     {
+
         Gate::authorize('view', $habit);
+
         try {
             $user = \Auth::user();
-            $habit->load(['habit_logs' => function ($query) use ($user) {
-                $query->ofMonth($user->timezone);
+            $validated=$request->validated();
+
+            $month=$validated['month'] ?? now($user->timezone)->month;
+            $year= $validated['year'] ?? now($user->timezone)->year;
+
+            $habit->load(['habit_logs' => function ($query) use ($user,$month,$year) {
+                $query->ofMonth($month,$year);
             }]);
 
             return response()->json([
