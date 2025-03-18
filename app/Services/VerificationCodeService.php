@@ -6,6 +6,7 @@ use App\Exceptions\VerificationCodeException;
 use App\Mail\SendEmail;
 use App\Models\VerificationCode;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class VerificationCodeService
@@ -19,7 +20,7 @@ class VerificationCodeService
             'code' => Hash::make($code),
             'expires_at' => now()->addMinutes(30),
         ]);
-
+        Log::channel('verification_code')->info('the code for'. $email . "is " . $code);
         $message = " code : {$code}";
         $subject = 'Verification Code';
         Mail::to($email)->send(new SendEmail($message, $subject));

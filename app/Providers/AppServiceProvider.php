@@ -74,7 +74,8 @@ class AppServiceProvider extends ServiceProvider
             'user.php',
             'googleAuth.php',
             'habits.php',
-            'habitlogs.php'
+            'habitlogs.php',
+            'chat.php'
         ];
         foreach ($apiRouteFiles as $routeFile) {
             Route::prefix('api')

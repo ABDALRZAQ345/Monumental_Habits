@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MessageController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -32,4 +33,7 @@ Route::get('/auth/google/callback', function () {
     Auth::login($user);
 
     return redirect('/');
+});
+Route::get('/chat', function () {
+    return view('chat'); //we will make a blade for reciving messages
 });
