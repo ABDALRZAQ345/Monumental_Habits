@@ -5,7 +5,6 @@ namespace App\Policies;
 use App\Models\Habit;
 use App\Models\HabitLog;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class HabitLogPolicy
 {
@@ -36,9 +35,9 @@ class HabitLogPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user,Habit $habit, HabitLog $habitLog): bool
+    public function update(User $user, Habit $habit, HabitLog $habitLog): bool
     {
-        return  ($habit->user_id == $user->id && $habit->id==$habitLog->habit_id);
+        return $habit->user_id == $user->id && $habit->id == $habitLog->habit_id;
     }
 
     /**

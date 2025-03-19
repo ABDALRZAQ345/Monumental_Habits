@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
     //
-    protected $fillable=['user_id','text'];
+    protected $fillable = ['user_id', 'text'];
+
+    protected $hidden = ['updated_at'];
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Days;
 use App\Exceptions\ServerErrorException;
 use App\Http\Requests\Auth\TimeZoneRequest;
 use App\Http\Requests\Auth\UpdateUserRequest;
@@ -16,9 +15,9 @@ class UserController extends BaseController
 {
     /**
      * @throws ServerErrorException
-     *
      */
     protected UserService $userService;
+
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
@@ -35,9 +34,9 @@ class UserController extends BaseController
             return response()->json([
                 'status' => true,
                 'user' => UserResource::make($user),
-                'achievements' => 0 , // todo coming soon
-                'longest_streak' =>  $user->habits()->get()->map->LongestStreak()->max(),
-                'habits_completion' => $this->userService->ComplementInAWeek($user)
+                'achievements' => 0, // todo coming soon
+                'longest_streak' => $user->habits()->get()->map->LongestStreak()->max(),
+                'habits_completion' => $this->userService->ComplementInAWeek($user),
             ]);
         } catch (Exception $e) {
             throw new ServerErrorException($e->getMessage());

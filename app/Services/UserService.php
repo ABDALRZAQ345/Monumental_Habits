@@ -51,21 +51,23 @@ class UserService
     {
 
         $timezone = $user->timezone;
-        $now=Carbon::now($timezone);
+        $now = Carbon::now($timezone);
         $startOfWeek = $now->copy()->startOfWeek(Carbon::SUNDAY);
         $endOfWeek = $startOfWeek->copy()->addDays(6);
         // getting all habits in that week
         $habits = $user->habits()->with([
             'habit_logs' => function ($query) use ($startOfWeek, $endOfWeek) {
                 $query->whereBetween('date', [$startOfWeek->format('Y-m-d'), $endOfWeek->format('Y-m-d')]);
-            }
+            },
         ])->get();
         $completed = array_fill(0, 7, 0);
         $total = array_fill(0, 7, 0);
         // complexity is 20 (max_number_of_habits) * 7 (days of week ) = 140 which is very small and fast
         foreach ($habits as $habit) {
             foreach ($habit->habit_logs as $log) {
-                if($log->status===null) continue;
+                if ($log->status === null) {
+                    continue;
+                }
                 $dayIndex = Carbon::parse($log->date)->dayOfWeek;
                 $total[$dayIndex]++;
                 if ($log->status != 0) {
@@ -73,11 +75,12 @@ class UserService
                 }
             }
         }
-        $data =[];
-        $days=Days::getDaysArray();
-        foreach ($days as $name => $value ) {
-            $data[$name]="$completed[$value] / $total[$value]";
+        $data = [];
+        $days = Days::getDaysArray();
+        foreach ($days as $name => $value) {
+            $data[$name] = "$completed[$value] / $total[$value]";
         }
+
         return $data;
     }
 }

@@ -88,10 +88,6 @@ class HabitLogService
 
     }
 
-    /**
-     * @param $habitLog
-     * @return void
-     */
     public function updateNextLogsIfFalse($habitLog): void
     {
         $streakValue = $habitLog->streak;
@@ -102,29 +98,25 @@ class HabitLogService
             ->get();
 
         $previousDate = Carbon::parse($habitLog->date);
-        if ($streakValue != 0)
+        if ($streakValue != 0) {
             foreach ($nextLogs as $log) {
                 $logDate = Carbon::parse($log->date);
 
-                if (!$logDate->isSameDay($previousDate->addDay())) {
+                if (! $logDate->isSameDay($previousDate->addDay())) {
                     break;
                 }
-
 
                 $log->streak -= $streakValue;
                 $log->save();
 
                 $previousDate = $logDate;
             }
+        }
     }
 
-    /**
-     * @param $habitLog
-     * @return void
-     */
     public function updateNextLogsIfTrue($habitLog): void
     {
-//updating the next streaks
+        // updating the next streaks
         $nextLogs = HabitLog::where('habit_id', $habitLog->habit_id)
             ->where('date', '>', $habitLog->date)
             ->where('status', 1)
@@ -137,13 +129,14 @@ class HabitLogService
         foreach ($nextLogs as $log) {
             $logDate = Carbon::parse($log->date);
 
-
-            if (!$logDate->isSameDay($previousDate->addDay())) {
+            if (! $logDate->isSameDay($previousDate->addDay())) {
                 break;
             }
 
             $streakValue++;
-            if ($log->streak == $streakValue) break;
+            if ($log->streak == $streakValue) {
+                break;
+            }
             $log->streak = $streakValue;
             $log->save();
 

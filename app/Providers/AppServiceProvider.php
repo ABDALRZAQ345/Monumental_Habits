@@ -3,17 +3,14 @@
 namespace App\Providers;
 
 use App\Models\Habit;
-use App\Models\HabitLog;
 use App\Models\User;
 use App\Observers\HabitObserver;
 use App\Observers\UserObserver;
 use App\Policies\HabitLogPolicy;
-use App\Policies\HabitPolicy;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -51,12 +48,12 @@ class AppServiceProvider extends ServiceProvider
     private function rateLimiters(): void
     {
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(30)->by($request->user()?->id ?: $request->ip());
+            return Limit::perMinute(10)->by($request->user()?->id ?: $request->ip());
         });
         RateLimiter::for('send_confirmation_code', function (Request $request) {
             return [
-                Limit::perMinutes(30, 30)->by($request->ip()),
-                Limit::perDay(200)->by($request->ip()),
+                Limit::perMinutes(30, 5)->by($request->ip()),
+                Limit::perDay(25)->by($request->ip()),
             ];
         });
         RateLimiter::for('register', function (Request $request) {
@@ -75,7 +72,7 @@ class AppServiceProvider extends ServiceProvider
             'googleAuth.php',
             'habits.php',
             'habitlogs.php',
-            'chat.php'
+            'chat.php',
         ];
         foreach ($apiRouteFiles as $routeFile) {
             Route::prefix('api')

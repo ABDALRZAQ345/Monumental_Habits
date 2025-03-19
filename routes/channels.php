@@ -2,6 +2,4 @@
 
 use Illuminate\Support\Facades\Broadcast;
 
-Broadcast::channel('chat',function(){
-
-});
+Broadcast::channel('chat', function () {});

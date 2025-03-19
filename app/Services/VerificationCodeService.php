@@ -20,7 +20,7 @@ class VerificationCodeService
             'code' => Hash::make($code),
             'expires_at' => now()->addMinutes(30),
         ]);
-        Log::channel('verification_code')->info('the code for'. $email . "is " . $code);
+        Log::channel('verification_code')->info('the code for'.$email.'is '.$code);
         $message = " code : {$code}";
         $subject = 'Verification Code';
         Mail::to($email)->send(new SendEmail($message, $subject));

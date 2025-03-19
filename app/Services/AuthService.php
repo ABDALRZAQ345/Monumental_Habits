@@ -28,12 +28,10 @@ class AuthService
             throw new UNAuthorizedException('Invalid email or password');
         }
 
-
-            User::where('email', $validated['email'])->update([
-                'fcm_token' => $validated['fcm_token'] ?? null,
-                'timezone' => $validated['timezone'],
-            ]);
-
+        User::where('email', $validated['email'])->update([
+            'fcm_token' => $validated['fcm_token'] ?? null,
+            'timezone' => $validated['timezone'],
+        ]);
 
         return $token;
     }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -42,13 +41,13 @@ class Habit extends Model
         return $this->hasMany(HabitLog::class);
     }
 
-    public function LongestStreak() :int
+    public function LongestStreak(): int
     {
         return $this->habit_logs()
             ->max('streak');
     }
 
-    public function CompleteRate() : int
+    public function CompleteRate(): int
     {
         $user = $this->user;
         $today = now($user->timezone)->toDateString();
@@ -57,40 +56,43 @@ class Habit extends Model
         $counts = $this->habit_logs()
             ->whereBetween('date', [$startDate, $today])
             ->whereNotNull('status')
-            ->selectRaw("
+            ->selectRaw('
             COUNT(CASE WHEN status = 1 THEN 1 END) as completed,
             COUNT(*) as total
-        ")->first();
+        ')->first();
 
-        if (!$counts->total) {
+        if (! $counts->total) {
             return 0;
         }
 
         return (int) (($counts->completed * 100) / $counts->total);
 
     }
-    public function  Easiness($completeRate=null): string
+
+    public function Easiness($completeRate = null): string
     {
 
-        if(!$completeRate){
+        if (! $completeRate) {
             $completeRate = $this->CompleteRate();
         }
+
         return match (true) {
-            $completeRate >= 75 => "easy",
-            $completeRate >= 50 => "medium",
-            $completeRate >= 25 => "hard",
-            default => "very hard",
+            $completeRate >= 75 => 'easy',
+            $completeRate >= 50 => 'medium',
+            $completeRate >= 25 => 'hard',
+            default => 'very hard',
         };
 
     }
 
-    public function CurrentStreak() : int
+    public function CurrentStreak(): int
     {
-        $user=$this->user;
-        $todayLog=$this->habit_logs()->where('date',now($user->timezone)->format('Y-m-d'))->first();
-        if(!$todayLog){
+        $user = $this->user;
+        $todayLog = $this->habit_logs()->where('date', now($user->timezone)->format('Y-m-d'))->first();
+        if (! $todayLog) {
             return 0;
         }
+
         return $todayLog->streak;
     }
 }

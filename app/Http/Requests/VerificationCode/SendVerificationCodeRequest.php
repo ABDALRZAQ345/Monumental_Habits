@@ -30,7 +30,7 @@ class SendVerificationCodeRequest extends FormRequest
                     ['unique:users,email'],
                     ['exists:users,email']
                 ), ],
-            'registration' => ['required','boolean'],
+            'registration' => ['required', 'boolean'],
         ];
 
     }
