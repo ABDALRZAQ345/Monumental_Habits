@@ -10,7 +10,6 @@ use App\Models\HabitLog;
 use App\Services\HabitLogService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class HabitLogController extends Controller
@@ -38,9 +37,10 @@ class HabitLogController extends Controller
         try {
             $user = \Auth::user();
 
-            $editable=$this->CheckforEdit($habitLog, $user);
-            if(!$editable['status'])
-            return  response()->json($editable,400);
+            $editable = $this->CheckforEdit($habitLog, $user);
+            if (! $editable['status']) {
+                return response()->json($editable, 400);
+            }
 
             $this->habitLogService->UpdateHabitLogStatus($habitLog, $validated['status']);
 
@@ -55,21 +55,22 @@ class HabitLogController extends Controller
     }
 
     /**
-     * @param HabitLog $habitLog
-     * @param \App\Models\User|null $user
      * @return array
+     *
      * @throws BadRequestException
      */
     public function CheckforEdit(HabitLog $habitLog, ?\App\Models\User $user)
     {
         if ($habitLog->status === null || ($habitLog->date > now($user->timezone)->format('Y-m-d'))) {
             $message = ($habitLog->date > now($user->timezone)->format('Y-m-d')) ? 'future day' : 'day off';
+
             return [
                 'status' => false,
-                'you cant edit habit log for this day its ' . $message
-                ];
+                'you cant edit habit log for this day its '.$message,
+            ];
 
         }
+
         return [
             'status' => true,
         ];

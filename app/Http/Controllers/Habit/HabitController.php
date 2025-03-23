@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Gate;
 class HabitController extends BaseController
 {
     protected $habitService;
+
     public function __construct(HabitService $habitService)
     {
         $this->habitService = $habitService;
@@ -29,7 +30,7 @@ class HabitController extends BaseController
     {
         try {
             $user = \Auth::user();
-            $habits = $user->habits()->select('id','name','reminder_time')->get();
+            $habits = $user->habits()->select('id', 'name', 'reminder_time')->get();
 
             return response()->json([
                 'status' => true,
@@ -50,8 +51,8 @@ class HabitController extends BaseController
         try {
 
             $user = \Auth::user();
-            $validation =$this->habitService->CanCreateHabit($user, $validated['name']);
-            if (!$validation['status']) {
+            $validation = $this->habitService->CanCreateHabit($user, $validated['name']);
+            if (! $validation['status']) {
                 return response()->json($validation, 400);
             }
             HabitService::store($user, $validated);
@@ -76,8 +77,12 @@ class HabitController extends BaseController
         Gate::authorize('update', $habit);
         $validated = $request->validated();
         try {
-
-            $habit = HabitService::update($habit, $validated);
+            $user = \Auth::user();
+            $validation = $this->habitService->CanUpdateHabit($user, $habit, $validated['name']);
+            if (! $validation['status']) {
+                return response()->json($validation, 400);
+            }
+            HabitService::update($habit, $validated);
 
             return response()->json([
                 'status' => true,
@@ -129,7 +134,7 @@ class HabitController extends BaseController
                 $query->ofMonth($month, $year);
             }]);
 
-            return  HabitResponse::response($user,$habit);
+            return HabitResponse::response($user, $habit);
 
         } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());

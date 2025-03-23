@@ -19,22 +19,10 @@ class HomePageRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    protected $user_year;
-
-    protected $user_month;
-
     public function rules(): array
     {
         return [
-            'month' => ['nullable', 'integer', 'min:1', "max:$this->user_month"],
-            'year' => ['nullable', 'integer', "max:$this->user_year"],
+            'order' => ['required', 'numeric', 'min:0'],
         ];
-    }
-
-    protected function prepareForValidation(): void
-    {
-        $user = \Auth::user();
-        $this->user_year = now($user->timezone)->year;
-        $this->user_month = now($user->timezone)->month;
     }
 }

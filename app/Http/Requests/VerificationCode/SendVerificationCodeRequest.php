@@ -34,6 +34,7 @@ class SendVerificationCodeRequest extends FormRequest
         ];
 
     }
+
     public function messages(): array
     {
         return [

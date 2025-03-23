@@ -63,19 +63,16 @@ class PasswordController extends BaseController
 
         $validated = $request->validated();
 
+        $user = Auth::user();
+        if (Hash::check($validated['old_password'], $user->password)) {
 
-            $user = Auth::user();
-            if (Hash::check($validated['old_password'], $user->password)) {
+            UserService::updatePassword($user, $validated['new_password']);
 
-                UserService::updatePassword($user, $validated['new_password']);
-
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Password reset successfully!',
-                ]);
-            }
-            throw new UNAuthorizedException('Wrong old password!');
-
-
+            return response()->json([
+                'status' => true,
+                'message' => 'Password reset successfully!',
+            ]);
+        }
+        throw new UNAuthorizedException('Wrong old password!');
     }
 }

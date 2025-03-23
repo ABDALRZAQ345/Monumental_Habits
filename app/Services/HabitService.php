@@ -37,26 +37,25 @@ class HabitService
 
     }
 
-    public function CanCreateHabit($user,$name): array
+    public function CanCreateHabit($user, $name): array
     {
         if ($user->habits()->count() >= config('app.data.max_habits')) {
             return [
                 'status' => false,
-                'message' => 'Sorry, you can’t add more than '.config('app.data.max_habits').' habits.'
+                'message' => 'Sorry, you can’t add more than '.config('app.data.max_habits').' habits.',
             ];
         }
 
         if ($user->habits()->where('name', $name)->exists()) {
             return [
                 'status' => false,
-                'message' => 'Habit already exists!'
+                'message' => 'Habit already exists!',
             ];
         }
 
         return [
-            'status' => true
+            'status' => true,
         ];
-
 
     }
 
@@ -69,5 +68,21 @@ class HabitService
         ]);
 
         return $habit;
+    }
+
+    public function CanUpdateHabit($user, $habit, $name): array
+    {
+
+        if ($user->habits()->where('id', '!=', $habit->id)->where('name', $name)->exists()) {
+            return [
+                'status' => false,
+                'message' => 'There is another habit with that name',
+            ];
+        }
+
+        return [
+            'status' => true,
+        ];
+
     }
 }

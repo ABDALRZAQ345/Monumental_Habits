@@ -13,11 +13,11 @@ Route::get('/', function () {
     ]);
 });
 
-//Route::get('/auth/google', function () {
+// Route::get('/auth/google', function () {
 //    return Socialite::driver('google')->redirect();
-//})->name('auth.google');
+// })->name('auth.google');
 //
-//Route::get('/auth/google/callback', function () {
+// Route::get('/auth/google/callback', function () {
 //    $googleUser = Socialite::driver('google')->stateless()->user();
 //
 //    $user = User::updateOrCreate([
@@ -32,7 +32,7 @@ Route::get('/', function () {
 //    Auth::login($user);
 //
 //    return redirect('/');
-//});
+// });
 Route::get('/chat', function () {
     return view('chat'); // we will make a blade for reciving messages
 });

@@ -33,7 +33,7 @@ class UserController extends BaseController
         try {
             $user = Auth::user();
 
-            return UserProfileResponse::response($user,$this->userService);
+            return UserProfileResponse::response($user, $this->userService);
 
         } catch (Exception $e) {
             throw new ServerErrorException($e->getMessage());

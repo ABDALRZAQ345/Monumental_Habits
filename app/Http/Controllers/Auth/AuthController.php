@@ -74,7 +74,7 @@ class AuthController extends BaseController
     {
         $token = auth()->refresh();
 
-        return  LogedInResponse::response($token);
+        return LogedInResponse::response($token);
 
     }
 }

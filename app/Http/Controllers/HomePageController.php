@@ -18,14 +18,12 @@ class HomePageController extends Controller
         try {
             $user = \Auth::user();
             $validated = $request->validated();
-
-            $month = $validated['month'] ?? now($user->timezone)->month;
-            $year = $validated['year'] ?? now($user->timezone)->year;
-
-            $habits = $user->habits()->with(['habit_logs' => function ($query) use ($month, $year) {
-                $query->ofWeek($month, $year)->where('date', '<=', now()->format('Y-m-d'))->orderBy('date', 'desc');
-
-            }])->select('id','name')->get();
+            // $cacheExpiration = $this->CachingTime($user, $validated['order']);
+            // todo need to be cached
+            $habits = $user->habits()->with(['habit_logs' => function ($query) use ($validated, $user) {
+                $now = now()->format('Y-m-d');
+                $query->ofWeek($user->timezone, (int) $validated['order'])->where('date', '<=', $now)->orderBy('date', 'desc');
+            }])->select('id', 'name')->get();
 
             return response()->json([
                 'user_current_date' => Carbon::now($user->timezone)->toDateString(),
@@ -35,5 +33,20 @@ class HomePageController extends Controller
             throw new ServerErrorException($e->getMessage());
         }
 
+    }
+
+    /**
+     * @return float|int
+     */
+    public function CachingTime(?\App\Models\User $user, $order): int
+    {
+        $now = Carbon::now($user->timezone);
+        $endOfDay = $now->copy()->endOfDay();
+        $cacheExpiration = $now->diffInMinutes($endOfDay);
+        if ($order != 0) {
+            $cacheExpiration = 60 * 24 * 30 * 365;
+        }
+
+        return (int) $cacheExpiration;
     }
 }

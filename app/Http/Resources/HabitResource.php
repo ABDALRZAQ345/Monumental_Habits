@@ -20,7 +20,7 @@ class HabitResource extends JsonResource
 
         $habit = Habit::find($data['id']);
 
-        if(isset($data['days']) &&$data['days']!=null){
+        if (isset($data['days']) && $data['days'] != null) {
             $data['days'] = $habit->getDays();
         }
 

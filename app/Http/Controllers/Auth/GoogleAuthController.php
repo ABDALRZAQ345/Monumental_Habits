@@ -64,8 +64,7 @@ class GoogleAuthController extends BaseController
 
             return $this->handleGoogleUser($idToken);
 
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());
         }
 

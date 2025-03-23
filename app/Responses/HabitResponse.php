@@ -3,18 +3,13 @@
 namespace App\Responses;
 
 use App\Http\Resources\HabitResource;
-use App\Http\Resources\UserResource;
 use App\Models\Habit;
 use App\Models\User;
-use App\Services\UserService;
 use Carbon\Carbon;
 
-class  HabitResponse
+class HabitResponse
 {
-
-
-
-    public static function response(User $user,Habit $habit): \Illuminate\Http\JsonResponse
+    public static function response(User $user, Habit $habit): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'status' => true,

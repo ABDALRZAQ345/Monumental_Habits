@@ -14,7 +14,7 @@ class Habit extends Model
 
     protected $fillable = ['user_id', 'name',  'days', 'reminder_time'];
 
-    protected $hidden = ['user', 'created_at', 'updated_at','user_id'];
+    protected $hidden = ['user', 'created_at', 'updated_at', 'user_id'];
 
     public function getDays(): array
     {

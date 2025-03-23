@@ -61,20 +61,19 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('api/*')) {
                 return response()->json([
                     'status' => false,
-                    'message' => "Too Many Attempts try again later .",
+                    'message' => 'Too Many Attempts try again later .',
                 ], 429);
             }
         });
-//        $exceptions->render(function (Exception $e, Request $request) {
-//
-//            if ($request->is('api/*')) {
-//                return response()->json([
-//                    'status' => false,
-//                    'message' => "Something went wrong.",
-//                ], 500);
-//            }
-//        });
-
+        //        $exceptions->render(function (Exception $e, Request $request) {
+        //
+        //            if ($request->is('api/*')) {
+        //                return response()->json([
+        //                    'status' => false,
+        //                    'message' => "Something went wrong.",
+        //                ], 500);
+        //            }
+        //        });
 
     })
     ->create();

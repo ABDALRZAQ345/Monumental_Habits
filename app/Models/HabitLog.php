@@ -21,11 +21,11 @@ class HabitLog extends Model
         return $this->belongsTo(Habit::class);
     }
 
-    public function scopeOfWeek($query, $timezone = null)
+    public function scopeOfWeek($query, $timezone = null, int $order = 0)
     {
         $timezone = $timezone ?: config('app.timezone');
-        $startOfWeek = Carbon::now($timezone)->startOfWeek(Carbon::SUNDAY);
-        $endOfWeek = Carbon::now($timezone)->endOfWeek(Carbon::SUNDAY);
+        $startOfWeek = Carbon::now($timezone)->subDays(7 * $order)->startOfWeek(Carbon::SUNDAY);
+        $endOfWeek = $startOfWeek->copy()->addDays(6);
 
         return $query->whereBetween('date', [$startOfWeek, $endOfWeek]);
     }

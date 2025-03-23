@@ -31,6 +31,7 @@ class LoginRequest extends FormRequest
             'timezone' => ['required', 'string', 'timezone'],
         ];
     }
+
     public function messages(): array
     {
         return [
