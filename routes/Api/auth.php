@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\FcmTokenController;
-use App\Http\Controllers\PasswordController;
-use App\Http\Controllers\VerificationCodeController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\FcmTokenController;
+use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\Auth\VerificationCodeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {

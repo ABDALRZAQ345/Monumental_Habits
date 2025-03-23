@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Exceptions\ServerErrorException;
+use App\Exceptions\UNAuthorizedException;
 use App\Exceptions\VerificationCodeException;
+use App\Http\Controllers\BaseController;
 use App\Http\Requests\Password\ForgetPasswordRequest;
 use App\Http\Requests\Password\ResetPasswordRequest;
 use App\Models\User;
+use App\Responses\LogedInResponse;
 use App\Services\UserService;
 use App\Services\VerificationCodeService;
 use Illuminate\Http\JsonResponse;
@@ -39,14 +42,12 @@ class PasswordController extends BaseController
             DB::beginTransaction();
             $user = User::where('email', $validated['email'])->firstOrFail();
             UserService::updatePassword($user, $validated['password']);
+
             $this->verificationCodeService->delete($validated['email']);
             DB::commit();
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Password changed successfully!',
-                'token' => JWTAuth::fromUser($user),
-            ]);
+            return LogedInResponse::response(JWTAuth::fromUser($user));
+
         } catch (\Exception $e) {
             DB::rollBack();
             throw new ServerErrorException($e->getMessage());
@@ -62,7 +63,6 @@ class PasswordController extends BaseController
 
         $validated = $request->validated();
 
-        try {
 
             $user = Auth::user();
             if (Hash::check($validated['old_password'], $user->password)) {
@@ -74,10 +74,8 @@ class PasswordController extends BaseController
                     'message' => 'Password reset successfully!',
                 ]);
             }
-            throw new ServerErrorException('Wrong old password!');
-        } catch (\Exception $e) {
-            throw new ServerErrorException($e->getMessage());
-        }
+            throw new UNAuthorizedException('Wrong old password!');
+
 
     }
 }

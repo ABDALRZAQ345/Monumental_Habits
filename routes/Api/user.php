@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['throttle:api', 'locale', 'xss', 'auth:api'])->group(function () {

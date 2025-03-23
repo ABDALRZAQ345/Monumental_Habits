@@ -30,9 +30,16 @@ class SendVerificationCodeRequest extends FormRequest
                     ['unique:users,email'],
                     ['exists:users,email']
                 ), ],
-            'registration' => ['required', 'boolean'],
+            'registration' => ['required', 'in:1,0,true,false'],
         ];
 
+    }
+    public function messages(): array
+    {
+        return [
+            'email.exists' => 'there no account with this email',
+            'email.unique' => 'there is already an account with this email',
+        ];
     }
 
     public function failedValidation(Validator $validator)

@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Exceptions\ServerErrorException;
+use App\Http\Controllers\BaseController;
 use App\Models\User;
+use App\Responses\LogedInResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -38,10 +40,8 @@ class GoogleAuthController extends BaseController
             $token = JWTAuth::fromUser($user);
             DB::commit();
 
-            return response()->json([
-                'status' => true,
-                'token' => $token,
-            ]);
+            return LogedInResponse::response($token);
+
         } catch (\Exception $e) {
             DB::rollBack();
             throw new ServerErrorException($e->getMessage());
@@ -57,11 +57,17 @@ class GoogleAuthController extends BaseController
     {
         $idToken = $request->input('id_token');
 
-        if (! $idToken) {
-            return response()->json(['error' => 'No token provided'], 400);
-        }
+        try {
+            if (! $idToken) {
+                return response()->json(['error' => 'No token provided'], 400);
+            }
 
-        return $this->handleGoogleUser($idToken);
+            return $this->handleGoogleUser($idToken);
+
+        }
+        catch (\Exception $e) {
+            throw new ServerErrorException($e->getMessage());
+        }
 
     }
 }

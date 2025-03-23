@@ -6,6 +6,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -55,6 +56,25 @@ return Application::configure(basePath: dirname(__DIR__))
                 ], 403);
             }
         });
+        $exceptions->render(function (ThrottleRequestsException $e, Request $request) {
+
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Too Many Attempts try again later .",
+                ], 429);
+            }
+        });
+//        $exceptions->render(function (Exception $e, Request $request) {
+//
+//            if ($request->is('api/*')) {
+//                return response()->json([
+//                    'status' => false,
+//                    'message' => "Something went wrong.",
+//                ], 500);
+//            }
+//        });
+
 
     })
     ->create();

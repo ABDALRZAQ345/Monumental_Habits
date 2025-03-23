@@ -17,8 +17,13 @@ class HabitResource extends JsonResource
     {
 
         $data = parent::toArray($request);
+
         $habit = Habit::find($data['id']);
-        $data['days'] = $habit->getDays();
+
+        if(isset($data['days']) &&$data['days']!=null){
+            $data['days'] = $habit->getDays();
+        }
+
         if ($this->relationLoaded('habit_logs')) {
             $data['habit_logs'] = HabitLogResource::collection($data['habit_logs']);
         }

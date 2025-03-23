@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Exceptions\ServerErrorException;
+use App\Http\Controllers\BaseController;
 use App\Http\Requests\Auth\FcmTokenRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,7 @@ class FcmTokenController extends BaseController
         try {
 
             $user = Auth::user();
+
             $user->update([
                 'fcm_token' => $validated['fcm_token'],
             ]);

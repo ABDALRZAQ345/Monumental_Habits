@@ -18,8 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedTinyInteger('days')->default(0)
                 ->comment('mask define the days of week to do that habit for example if the mask is 0000,0001 then that habit should be done only on sunday if the mask is 0001,0101 then that habit should be done  on sunday , tuesday and thursday , so on');
-            $table->time('reminder_time')->nullable();
-            $table->boolean('notifications_enabled')->default(false);
+            $table->time('reminder_time')->nullable()->default(null);
             $table->timestamps();
         });
     }

@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Habit;
 
 use App\Exceptions\BadRequestException;
 use App\Exceptions\ServerErrorException;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateStatusRequest;
 use App\Models\HabitLog;
 use App\Services\HabitLogService;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -27,21 +29,19 @@ class HabitLogController extends Controller
      * @throws ServerErrorException
      * @throws AuthorizationException
      */
-    public function update(Request $request, HabitLog $habitLog): JsonResponse
+    public function update(UpdateStatusRequest $request, HabitLog $habitLog): JsonResponse
     {
 
         Gate::authorize('update-log', [$habit = $habitLog->habit, $habitLog]);
-        $validated = $request->validate([
-            'status' => ['required', 'boolean'],
-        ]);
+        $validated = $request->validated();
 
         try {
             $user = \Auth::user();
 
-            if ($habitLog->status === null || ($habitLog->date > now($user->timezone)->format('Y-m-d'))) {
-                $message = ($habitLog->date > now($user->timezone)->format('Y-m-d')) ? 'future day' : 'day off';
-                throw new BadRequestException('you cant edit habit log for this day its '.$message);
-            }
+            $editable=$this->CheckforEdit($habitLog, $user);
+            if(!$editable['status'])
+            return  response()->json($editable,400);
+
             $this->habitLogService->UpdateHabitLogStatus($habitLog, $validated['status']);
 
             return response()->json([
@@ -52,5 +52,26 @@ class HabitLogController extends Controller
             throw new ServerErrorException($e->getMessage());
         }
 
+    }
+
+    /**
+     * @param HabitLog $habitLog
+     * @param \App\Models\User|null $user
+     * @return array
+     * @throws BadRequestException
+     */
+    public function CheckforEdit(HabitLog $habitLog, ?\App\Models\User $user)
+    {
+        if ($habitLog->status === null || ($habitLog->date > now($user->timezone)->format('Y-m-d'))) {
+            $message = ($habitLog->date > now($user->timezone)->format('Y-m-d')) ? 'future day' : 'day off';
+            return [
+                'status' => false,
+                'you cant edit habit log for this day its ' . $message
+                ];
+
+        }
+        return [
+            'status' => true,
+        ];
     }
 }

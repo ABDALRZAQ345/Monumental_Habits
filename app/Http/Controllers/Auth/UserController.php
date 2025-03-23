@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Exceptions\ServerErrorException;
+use App\Http\Controllers\BaseController;
 use App\Http\Requests\Auth\TimeZoneRequest;
 use App\Http\Requests\Auth\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Responses\UserProfileResponse;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -31,13 +33,8 @@ class UserController extends BaseController
         try {
             $user = Auth::user();
 
-            return response()->json([
-                'status' => true,
-                'user' => UserResource::make($user),
-                'achievements' => 0, // todo coming soon
-                'longest_streak' => $user->habits()->get()->map->LongestStreak()->max(),
-                'habits_completion' => $this->userService->ComplementInAWeek($user),
-            ]);
+            return UserProfileResponse::response($user,$this->userService);
+
         } catch (Exception $e) {
             throw new ServerErrorException($e->getMessage());
         }

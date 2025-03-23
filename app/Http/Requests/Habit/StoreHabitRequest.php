@@ -28,22 +28,10 @@ class StoreHabitRequest extends FormRequest
             'days' => ['required', 'array'],
             'days.*' => ['required', 'in:Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday'],
             'reminder_time' => ['nullable', 'date-format:H:i'],
-            'notifications_enabled' => ['boolean'],
         ];
     }
 
-    public function withValidator($validator): void
-    {
-        $validator->after(function ($validator) {
-            $user = auth()->user();
-            if ($user && $user->habits()->count() >= config('app.data.max_habits')) {
-                $validator->errors()->add(
-                    'max_habits',
-                    'Sorry, you can’t add more than '.config('app.data.max_habits').' habits.'
-                );
-            }
-        });
-    }
+
 
     public function failedValidation(Validator $validator)
     {

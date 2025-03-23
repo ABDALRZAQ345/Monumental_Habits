@@ -33,8 +33,30 @@ class HabitService
             'name' => $data['name'],
             'days' => self::encodeDays($data['days']),
             'reminder_time' => $data['reminder_time'],
-            'notifications_enabled' => $data['notifications_enabled'] ?? false,
         ]);
+
+    }
+
+    public function CanCreateHabit($user,$name): array
+    {
+        if ($user->habits()->count() >= config('app.data.max_habits')) {
+            return [
+                'status' => false,
+                'message' => 'Sorry, you can’t add more than '.config('app.data.max_habits').' habits.'
+            ];
+        }
+
+        if ($user->habits()->where('name', $name)->exists()) {
+            return [
+                'status' => false,
+                'message' => 'Habit already exists!'
+            ];
+        }
+
+        return [
+            'status' => true
+        ];
+
 
     }
 
@@ -44,7 +66,6 @@ class HabitService
             'name' => $data['name'],
             'days' => self::encodeDays($data['days']),
             'reminder_time' => $data['reminder_time'],
-            'notifications_enabled' => $data['notifications_enabled'] ?? false,
         ]);
 
         return $habit;

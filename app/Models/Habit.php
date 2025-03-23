@@ -12,9 +12,9 @@ class Habit extends Model
     /** @use HasFactory<\Database\Factories\HabitFactory> */
     use HasFactory;
 
-    protected $fillable = ['user_id', 'name',  'days', 'reminder_time', 'notifications_enabled'];
+    protected $fillable = ['user_id', 'name',  'days', 'reminder_time'];
 
-    protected $hidden = ['user', 'created_at', 'updated_at'];
+    protected $hidden = ['user', 'created_at', 'updated_at','user_id'];
 
     public function getDays(): array
     {

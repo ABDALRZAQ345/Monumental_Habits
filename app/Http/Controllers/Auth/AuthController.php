@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Exceptions\ServerErrorException;
+use App\Http\Controllers\BaseController;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\SignupRequest;
-use App\Http\Resources\UserResource;
+use App\Responses\LogedInResponse;
+use App\Responses\LogedOutResponse;
 use App\Services\AuthService;
 use App\Services\VerificationCodeService;
 use Illuminate\Http\JsonResponse;
@@ -34,12 +36,7 @@ class AuthController extends BaseController
 
         $user = $this->authService->attemptRegister($validated);
 
-        return response()->json([
-            'status' => true,
-            'message' => 'User Created Successfully',
-            'token' => JWTAuth::fromUser($user),
-            'user' => UserResource::make($user),
-        ]);
+        return LogedInResponse::response(JWTAuth::fromUser($user));
 
     }
 
@@ -54,10 +51,7 @@ class AuthController extends BaseController
 
         $token = $this->authService->attemptLogin($credentials, $request->validated());
 
-        return response()->json([
-            'status' => true,
-            'token' => $token,
-        ]);
+        return LogedInResponse::response($token);
 
     }
 
@@ -69,10 +63,8 @@ class AuthController extends BaseController
         try {
             auth()->logout();
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Logged out successfully',
-            ]);
+            return LogedOutResponse::response();
+
         } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());
         }
@@ -82,10 +74,7 @@ class AuthController extends BaseController
     {
         $token = auth()->refresh();
 
-        return response()->json([
-            'status' => true,
-            'token' => $token,
-        ]);
+        return  LogedInResponse::response($token);
 
     }
 }

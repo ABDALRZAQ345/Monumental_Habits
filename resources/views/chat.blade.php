@@ -16,7 +16,9 @@
         window.Echo.channel('chat')
             .listen('NewMessage',(e)=>{
              console.log(e)
-            } ,200 )
+
+            } ,5 )
+
     })
 </script>
 

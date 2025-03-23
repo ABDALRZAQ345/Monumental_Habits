@@ -23,8 +23,9 @@ class HomePageController extends Controller
             $year = $validated['year'] ?? now($user->timezone)->year;
 
             $habits = $user->habits()->with(['habit_logs' => function ($query) use ($month, $year) {
-                $query->ofMonth($month, $year)->where('date', '<=', now()->format('Y-m-d'))->orderBy('date', 'desc');
-            }])->get()->makeHidden(['user_id', 'reminder_time', 'notifications_enabled']);
+                $query->ofWeek($month, $year)->where('date', '<=', now()->format('Y-m-d'))->orderBy('date', 'desc');
+
+            }])->select('id','name')->get();
 
             return response()->json([
                 'user_current_date' => Carbon::now($user->timezone)->toDateString(),

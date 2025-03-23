@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Exceptions\ServerErrorException;
 use App\Exceptions\VerificationCodeException;
+use App\Http\Controllers\BaseController;
 use App\Http\Requests\VerificationCode\CheckVerificationCode;
 use App\Http\Requests\VerificationCode\SendVerificationCodeRequest;
 use App\Jobs\SendVerificationCode;

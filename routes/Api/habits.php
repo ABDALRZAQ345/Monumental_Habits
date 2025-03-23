@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\HabitController;
+use App\Http\Controllers\Habit\HabitController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['throttle:api', 'locale', 'xss', 'auth:api'])->group(function () {

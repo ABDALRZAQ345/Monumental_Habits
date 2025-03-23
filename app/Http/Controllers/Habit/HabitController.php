@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Habit;
 
 use App\Exceptions\ServerErrorException;
+use App\Http\Controllers\BaseController;
 use App\Http\Requests\Habit\StoreHabitRequest;
 use App\Http\Requests\ShowHabitRequest;
 use App\Http\Resources\HabitResource;
 use App\Models\Habit;
+use App\Responses\HabitResponse;
 use App\Services\HabitService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
@@ -14,6 +16,12 @@ use Illuminate\Support\Facades\Gate;
 
 class HabitController extends BaseController
 {
+    protected $habitService;
+    public function __construct(HabitService $habitService)
+    {
+        $this->habitService = $habitService;
+    }
+
     /**
      * @throws ServerErrorException
      */
@@ -21,11 +29,10 @@ class HabitController extends BaseController
     {
         try {
             $user = \Auth::user();
-            $habits = $user->habits;
+            $habits = $user->habits()->select('id','name','reminder_time')->get();
 
             return response()->json([
                 'status' => true,
-                'message' => 'Habit created successfully',
                 'habits' => HabitResource::collection($habits),
             ]);
         } catch (\Exception $e) {
@@ -43,12 +50,15 @@ class HabitController extends BaseController
         try {
 
             $user = \Auth::user();
-            $habit = HabitService::store($user, $validated);
+            $validation =$this->habitService->CanCreateHabit($user, $validated['name']);
+            if (!$validation['status']) {
+                return response()->json($validation, 400);
+            }
+            HabitService::store($user, $validated);
 
             return response()->json([
                 'status' => true,
                 'message' => 'Habit created successfully',
-                'habit' => habitResource::make($habit),
             ]);
         } catch (\Exception $e) {
 
@@ -72,7 +82,6 @@ class HabitController extends BaseController
             return response()->json([
                 'status' => true,
                 'message' => 'Habit updated successfully',
-                'habit' => habitResource::make($habit),
             ]);
         } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());
@@ -120,14 +129,8 @@ class HabitController extends BaseController
                 $query->ofMonth($month, $year);
             }]);
 
-            return response()->json([
-                'status' => true,
-                'habit' => habitResource::make($habit),
-                'longest_streak' => $habit->LongestStreak(),
-                'current_streak' => $habit->CurrentStreak(),
-                'complete_rate' => $complete_rate = $habit->CompleteRate(),
-                'easiness' => $habit->Easiness($complete_rate),
-            ]);
+            return  HabitResponse::response($user,$habit);
+
         } catch (\Exception $e) {
             throw new ServerErrorException($e->getMessage());
         }

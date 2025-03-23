@@ -31,6 +31,12 @@ class LoginRequest extends FormRequest
             'timezone' => ['required', 'string', 'timezone'],
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'email.exists' => 'there no account with this email',
+        ];
+    }
 
     public function failedValidation(Validator $validator)
     {
