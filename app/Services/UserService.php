@@ -77,10 +77,12 @@ class UserService
         }
         $data = [];
         $days = Days::getDaysArray();
+
         foreach ($days as $name => $value) {
+            $percentage= $total[$value] != 0 ? $completed[$value] / $total[$value] : 0;
             $data[$name] = [
                 "$completed[$value] / $total[$value]",
-                $completed[$value] / $total[$value],
+               $percentage
             ];
         }
 

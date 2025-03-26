@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        //? better to be in nosql db in future
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->string('text', 500);
