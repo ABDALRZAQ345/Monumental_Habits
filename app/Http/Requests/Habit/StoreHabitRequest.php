@@ -24,8 +24,8 @@ class StoreHabitRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'days' => ['required', 'array'],
+            'name' => ['required', 'string', 'max:50'],
+            'days' => ['required', 'array', 'max:7'],
             'days.*' => ['required', 'in:Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday'],
             'reminder_time' => ['nullable', 'date-format:H:i'],
         ];

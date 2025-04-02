@@ -10,13 +10,13 @@ class HabitService
     public static function encodeDays(array $days): int
     {
         $map = [
-            'Sunday' => 1 << 0, // 0000001 = 1
-            'Monday' => 1 << 1, // 0000010 = 2
-            'Tuesday' => 1 << 2, // 0000100 = 4
-            'Wednesday' => 1 << 3, // 0001000 = 8
-            'Thursday' => 1 << 4, // 0010000 = 16
-            'Friday' => 1 << 5, // 0100000 = 32
-            'Saturday' => 1 << 6, // 1000000 = 64
+            'Sunday' => 1 << 0, // 1
+            'Monday' => 1 << 1, // 2
+            'Tuesday' => 1 << 2, // 4
+            'Wednesday' => 1 << 3,  // 8
+            'Thursday' => 1 << 4, // ...
+            'Friday' => 1 << 5,
+            'Saturday' => 1 << 6,
         ];
         $mask = 0;
         foreach ($days as $day) {

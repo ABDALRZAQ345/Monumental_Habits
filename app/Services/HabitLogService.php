@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Enums\Days;
 use App\Models\Habit;
 use App\Models\HabitLog;
 use Carbon\Carbon;
@@ -43,7 +42,7 @@ class HabitLogService
         $currentDate = now($user->timezone)->toDateString();
 
         // update logs which are in selected days  but not checked
-
+        // ? fix it  if will use postgres in production
         HabitLog::where('habit_id', $habit->id)
             ->where('date', '>=', $currentDate)
             ->whereIn(\DB::raw('DAYNAME(date)'), $days)

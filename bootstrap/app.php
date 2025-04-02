@@ -65,17 +65,16 @@ return Application::configure(basePath: dirname(__DIR__))
                 ], 429);
             }
         });
-        if(app()->environment() == 'production') {
-          $exceptions->render(function (Exception $e, Request $request) {
-                    if ($request->is('api/*')) {
-                        return response()->json([
-                            'status' => false,
-                            'message' => "Something went wrong.",
-                        ], 500);
-                    }
-                });
+        if (app()->environment() == 'production') {
+            $exceptions->render(function (Exception $e, Request $request) {
+                if ($request->is('api/*')) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Something went wrong.',
+                    ], 500);
+                }
+            });
         }
-
 
     })
     ->create();

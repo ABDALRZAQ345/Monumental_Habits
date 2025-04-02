@@ -28,7 +28,7 @@ class SignupRequest extends FormRequest
             'name' => ['required', 'string', 'max:50'],
             'password' => ['required', 'confirmed', Password::defaults(), 'max:40'],
             'email' => ['required',  'email:dns', 'unique:users,email'],
-            'photo' => ['nullable', 'image', 'max:3072'],
+            'photo' => ['nullable', 'image', 'max:512'],
             'code' => ['required', 'numeric', 'digits:6'],
             'fcm_token' => ['nullable', 'string'],
             'timezone' => ['required', 'string', 'timezone'],

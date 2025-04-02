@@ -13,7 +13,7 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
     Route::middleware('guest')->group(function () {
         Route::post('/verificationCode/send', [VerificationCodeController::class, 'send'])->middleware('throttle:send_confirmation_code')->name('verificationCode.check');
 
-        Route::post('/verificationCode/check', [VerificationCodeController::class, 'check'])->name('verificationCode.check');
+        Route::post('/verificationCode/check', [VerificationCodeController::class, 'check'])->middleware('throttle:check_verification_code')->name('verificationCode.check');
 
         Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:register')->name('register');
 
@@ -25,7 +25,7 @@ Route::middleware(['throttle:api', 'locale', 'xss'])->group(function () {
         Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::post('/send_fcm', [FcmTokenController::class, 'send'])->name('fcm.send');
-        Route::post('/refresh', [AuthController::class, 'refresh'])->name('refresh');
+        Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('throttle:rare')->name('refresh');
     });
 
 });

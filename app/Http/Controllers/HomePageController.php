@@ -15,11 +15,12 @@ class HomePageController extends Controller
      */
     public function __invoke(HomePageRequest $request): JsonResponse
     {
+
         try {
             $user = \Auth::user();
             $validated = $request->validated();
-            // $cacheExpiration = $this->CachingTime($user, $validated['order']);
-            // todo need to be cached
+
+            // todo might need to be cached
             $habits = $user->habits()->with(['habit_logs' => function ($query) use ($validated, $user) {
                 $now = now()->format('Y-m-d');
                 $query->ofWeek($user->timezone, (int) $validated['order'])->where('date', '<=', $now)->orderBy('date', 'desc');

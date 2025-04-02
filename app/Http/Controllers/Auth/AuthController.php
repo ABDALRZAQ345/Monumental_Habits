@@ -32,6 +32,7 @@ class AuthController extends BaseController
      */
     public function register(SignupRequest $request): JsonResponse
     {
+
         $validated = $request->validated();
 
         $user = $this->authService->attemptRegister($validated);

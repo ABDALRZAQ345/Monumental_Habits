@@ -49,19 +49,30 @@ class AppServiceProvider extends ServiceProvider
     private function rateLimiters(): void
     {
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(30)->by($request->user()?->id ?: $request->ip());
+            return Limit::perMinute(10)->by($request->user()?->id ?: $request->ip());
         });
         RateLimiter::for('send_confirmation_code', function (Request $request) {
             return [
-                Limit::perMinutes(30, 5)->by($request->ip()),
-                Limit::perDay(25)->by($request->ip()),
+                Limit::perDay(30)->by($request->user()?->id ?: $request->ip()),
             ];
         });
+        RateLimiter::for('check_verification_code', function (Request $request) {
+            return Limit::perDay(20)->by($request->user()?->id ?: $request->ip());
+        });
         RateLimiter::for('register', function (Request $request) {
-            return Limit::perMinutes(30, 10)->by($request->user()?->id ?: $request->ip());
+            return [
+                Limit::perMinutes(30, 10)->by($request->user()?->id ?: $request->ip()),
+                Limit::perDay(40)->by($request->user()?->id ?: $request->ip()),
+            ];
         });
         RateLimiter::for('change_password', function (Request $request) {
-            return Limit::perDay(10)->by($request->user()?->id);
+            return Limit::perDay(10)->by($request->user()?->id ?: $request->ip());
+        });
+        RateLimiter::for('web', function (Request $request) {
+            return Limit::perMinute(10)->by($request->user()?->id ?: $request->ip());
+        });
+        RateLimiter::for('rare', function (Request $request) {
+            return Limit::perDay(2)->by($request->user()?->id ?: $request->ip());
         });
     }
 
@@ -96,7 +107,8 @@ class AppServiceProvider extends ServiceProvider
                 ->letters()
                 ->mixedCase()
                 ->numbers()
-                ->symbols();
+                ->symbols()
+                ->max(75);
         });
     }
 }

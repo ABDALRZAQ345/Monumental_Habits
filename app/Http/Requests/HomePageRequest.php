@@ -22,7 +22,7 @@ class HomePageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order' => ['required', 'numeric', 'min:0'],
+            'order' => ['required', 'numeric', 'min:0', 'max:53'],
         ];
     }
 }
