@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Habit;
 use App\Models\HabitLog;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class HabitLogService
 {
@@ -45,13 +46,12 @@ class HabitLogService
         // ? fix it  if will use postgres in production
         HabitLog::where('habit_id', $habit->id)
             ->where('date', '>=', $currentDate)
-            ->whereIn(\DB::raw('DAYNAME(date)'), $days)
+            ->whereIn(DB::raw("TO_CHAR(date, 'FMDay')"), $days)
             ->update(['status' => false]);
 
-        // update logs which are not selected
         HabitLog::where('habit_id', $habit->id)
             ->where('date', '>=', $currentDate)
-            ->whereNotIn(\DB::raw('DAYNAME(date)'), $days)
+            ->whereNotIn(DB::raw("TO_CHAR(date, 'FMDay')"), $days)
             ->update(['status' => null]);
     }
 

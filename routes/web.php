@@ -34,6 +34,4 @@ Route::get('/', function () {
 //
 //    return redirect('/');
 // });
-Route::get('/chat', function () {
-    return view('chat'); // we will make a blade for reciving messages
-});
+
