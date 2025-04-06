@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\App;
 
 class LocaleMiddleware
 {
@@ -11,6 +12,7 @@ class LocaleMiddleware
         // handling languages or maybe last login or any thing else that happen in each request
 
         return $next($request);
+
 
     }
 }

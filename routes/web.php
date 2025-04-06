@@ -6,13 +6,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
-Route::get('/', function () {
-
-    return response()->json([
-        'status' => true,
-        'message' => 'welcome to habit tracker i am backend developer so dont expect a view :) ',
-    ]);
-})->middleware(['locale', 'throttle:api', 'xss']);
 
 // Route::get('/auth/google', function () {
 //    return Socialite::driver('google')->redirect();
@@ -34,4 +27,6 @@ Route::get('/', function () {
 //
 //    return redirect('/');
 // });
-
+Route::get('/', function () {
+    return view('main');
+})->middleware(['locale', 'throttle:api', 'xss']);;

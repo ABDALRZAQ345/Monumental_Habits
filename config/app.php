@@ -125,4 +125,5 @@ return [
     'data' => [
         'max_habits' => env('APP_MAX_HABITS', 20),
     ],
+    'url' => env('APP_URL', 'http://localhost'),
 ];
