@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -531,8 +530,7 @@
 <header id="header">
     <div class="logo">
         <img src="{{ config('app.url').'/images/logo.png' }}" alt="Habitly Logo" class="logo-text" style="width: 50px; height: auto;" />
-
-        <div class="logo-text" id="app-name">Habitly</div>
+        <div class="logo-text" id="appName">Habitly</div>
     </div>
 
     <div class="menu-toggle" id="menu-toggle">
@@ -542,10 +540,10 @@
     </div>
 
     <nav class="nav-links" id="nav-links">
-        <a href="#top" id="nav-home">Home</a>
-        <a href="#features" id="nav-features">Features</a>
-        <a href="#download" id="nav-downloads">Download</a>
-        <a href="#contact" id="nav-contact">Contact</a>
+        <a href="#top" id="navHome">Home</a>
+        <a href="#features" id="navFeatures">Features</a>
+        <a href="#download" id="navDownloads">Download</a>
+        <a href="#contact" id="navContact">Contact</a>
     </nav>
 
     <div class="toggle-container">
@@ -560,21 +558,21 @@
 
 <section class="hero" id="hero">
     <img src="{{ config("app.url") .'/images/logo.png' }}" alt="Habitly Logo" class="hero-logo fade-in" />
-    <h1 class="fade-in fade-in-delay-1" id="hero-title">Habitly</h1>
-    <p class="fade-in fade-in-delay-2" id="hero-description">
-        Build new habits and achieve your goals with an extraordinary, modern interface that inspires you to excel.
+    <h1 class="fade-in fade-in-delay-1" id="heroTitle">Habitly</h1>
+    <p class="fade-in fade-in-delay-2" id="heroDescription">
+        Build new habits and achieve your goals with an extraordinary, modern interfaces that inspires you to excel.
     </p>
-    <a href="#download" class="cta-button fade-in fade-in-delay-3" id="download-btn">Download for Android</a>
+    <img src="{{ config("app.url") .'/images/pic1.png' }}" alt="screens" class="fade-in fade-in-delay-3" id="downloadBtn" style="cursor: pointer; width: 950px; max-width: 100%; height: auto;">
 </section>
 
 <section class="features" id="features">
-    <h2 class="section-title fade-in" id="features-title">Features</h2>
+    <h2 class="section-title fade-in" id="featuresTitle">Features</h2>
     <div class="features-grid">
         <!-- Feature 1 -->
         <div class="feature-card fade-in fade-in-delay-1">
             <div class="feature-icon">📊</div>
-            <h3 class="feature-title" id="feature1-title">Track & Monitor</h3>
-            <p class="feature-desc" id="feature1-description">
+            <h3 class="feature-title" id="feature1Title">Track & Monitor</h3>
+            <p class="feature-desc" id="feature1Description">
                 Keep a close eye on your daily routines with precise tracking and analytics.
             </p>
         </div>
@@ -582,8 +580,8 @@
         <!-- Feature 2 -->
         <div class="feature-card fade-in fade-in-delay-2">
             <div class="feature-icon">🗺️</div>
-            <h3 class="feature-title" id="feature2-title">Roadmaps</h3>
-            <p class="feature-desc" id="feature2-description">
+            <h3 class="feature-title" id="feature2Title">Roadmaps</h3>
+            <p class="feature-desc" id="feature2Description">
                 Plan your progress with detailed roadmaps and set clear milestones.
             </p>
         </div>
@@ -591,8 +589,8 @@
         <!-- Feature 3 -->
         <div class="feature-card fade-in fade-in-delay-3">
             <div class="feature-icon">💬</div>
-            <h3 class="feature-title" id="feature3-title">Real-time Chat</h3>
-            <p class="feature-desc" id="feature3-description">
+            <h3 class="feature-title" id="feature3Title">Real-time Chat</h3>
+            <p class="feature-desc" id="feature3Description">
                 Connect instantly with friends and share your progress live.
             </p>
         </div>
@@ -600,8 +598,8 @@
         <!-- Feature 4 -->
         <div class="feature-card fade-in fade-in-delay-4">
             <div class="feature-icon">🏆</div>
-            <h3 class="feature-title" id="feature4-title">Rewards & Achievements</h3>
-            <p class="feature-desc" id="feature4-description">
+            <h3 class="feature-title" id="feature4Title">Rewards & Achievements</h3>
+            <p class="feature-desc" id="feature4Description">
                 Earn rewards and celebrate every milestone as you conquer your goals.
             </p>
         </div>
@@ -609,8 +607,8 @@
         <!-- Feature 5 -->
         <div class="feature-card fade-in fade-in-delay-5">
             <div class="feature-icon">👥</div>
-            <h3 class="feature-title" id="feature5-title">Shared Habits & Competition</h3>
-            <p class="feature-desc" id="feature5-description">
+            <h3 class="feature-title" id="feature5Title">Shared Habits & Competition</h3>
+            <p class="feature-desc" id="feature5Description">
                 Compete with friends by sharing your habits and achievements to boost your motivation.
             </p>
         </div>
@@ -618,8 +616,8 @@
         <!-- Feature 6 -->
         <div class="feature-card fade-in fade-in-delay-6">
             <div class="feature-icon">⭐</div>
-            <h3 class="feature-title" id="feature6-title">And Much More!</h3>
-            <p class="feature-desc" id="feature6-description">
+            <h3 class="feature-title" id="feature6Title">And Much More!</h3>
+            <p class="feature-desc" id="feature6Description">
                 Discover additional features like streaks and more that will drive you to excel.
             </p>
         </div>
@@ -628,12 +626,12 @@
 
 <section class="download-section" id="download">
     <div class="features">
-        <h2 class="section-title fade-in" id="download-title">Download Now</h2>
+        <h2 class="section-title fade-in" id="downloadTitle">Download Now</h2>
         <div class="download-container fade-in fade-in-delay-1" style="text-align: center; max-width: 600px; margin: 0 auto;">
-            <p style="margin-bottom: 2rem;" id="download-description">
+            <p style="margin-bottom: 2rem;" id="downloadDescription">
                 Get started with Habitly today and transform your habits into achievements.
             </p>
-            <a href="#" class="cta-button" id="android-download-btn">Download for Android</a>
+            <a href="#" class="cta-button" id="androidDownloadBtn">Download for Android</a>
         </div>
     </div>
 </section>
@@ -641,36 +639,35 @@
 <footer id="contact">
     <div class="footer-content">
         <div class="footer-column">
-            <h3 id="footer-about-title">About Habitly</h3>
-            <p id="footer-about-text">
+            <h3 id="footerAboutTitle">About Habitly</h3>
+            <p id="footerAboutText">
                 Habitly is a modern habit tracking app designed to help you build positive routines and achieve your goals.
             </p>
             <div class="social-links">
-
                 <a href="https://github.com/ABDALRZAQ345/Habit-Tracker" aria-label="Github"><i class="backend_github">💻</i></a>
                 <a href="https://github.com/Dada6x/Habitly" aria-label="Github"><i class="frontend_github">💻</i></a>
             </div>
         </div>
 
         <div class="footer-column">
-            <h3 id="footer-links-title">Quick Links</h3>
+            <h3 id="footerLinksTitle">Quick Links</h3>
             <div class="footer-links">
-                <a href="#top" id="footer-home">Home</a>
-                <a href="#features" id="footer-features">Features</a>
-                <a href="#download" id="footer-download">Download</a>
-                <a href="#contact" id="footer-contact">Contact</a>
+                <a href="#top" id="footerHome">Home</a>
+                <a href="#features" id="footerFeatures">Features</a>
+                <a href="#download" id="footerDownload">Download</a>
+                <a href="#contact" id="footerContact">Contact</a>
             </div>
         </div>
 
         <div class="footer-column">
-            <h3 id="dev-info">Developers</h3>
-            <p class="developer-info">
-           <h4>Backend</h4>
-                <p id="dev-one">Abd alrzaq najieb - abdlarzaqnajieb@gmail.com</p>
-          <h4>FrontEnd</h4>
-                <p id="dev-two">Yahea dada - </p>
-                <p id="dev-three"> Ward ikhtiar -   </p>
-                <p id="contact-info">For more information, feel free to reach out!</p>
+            <h3 id="devInfo">Developers</h3>
+            <div class="developer-info">
+                <h4>Backend</h4>
+                <p id="devOne">Abd alrzaq najieb - abdlarzaqnajieb@gmail.com</p>
+                <h4>FrontEnd</h4>
+                <p id="devTwo">Yahea dada - dada.777.6x.outlook@gmail.com</p>
+                <p id="devThree">Ward ikhtiar - wardekr@gmail.com</p>
+                <p id="contactInfo">For more information, feel free to reach out!</p>
             </div>
         </div>
     </div>
@@ -691,7 +688,7 @@
             navDownloads: "Download",
             navContact: "Contact",
             heroTitle: "Habitly",
-            heroDescription: "Build new habits and achieve your goals with an extraordinary, modern interface that inspires you to excel.",
+            heroDescription: "Build new habits and achieve your goals with an extraordinary, modern interfaces that inspires you to excel.",
             downloadBtn: "Download for Android",
             featuresTitle: "Features",
             feature1Title: "Track & Monitor",
@@ -717,27 +714,27 @@
             footerDownload: "Download",
             footerContact: "Contact",
             devInfo: "Developers",
-            devOne: "John Doe - john.doe@example.com",
-            devTwo: "Jane Smith - jane.smith@example.com",
+            devOne: "Abd alrzaq najieb - abdlarzaqnajieb@gmail.com",
+            devTwo: "Yahea dada - dada.777.6x.outlook@gmail.com",
             contactInfo: "For more information, feel free to reach out!",
             copyright: "© 2025 Habitly - All rights reserved"
         },
         ar: {
-            appName: "هابتلي",
+            appName: "Habitly",
             navHome: "الرئيسية",
             navFeatures: "المميزات",
             navDownloads: "التحميل",
             navContact: "اتصل بنا",
-            heroTitle: "هابتلي",
-            heroDescription: "ابدأ في بناء عادات جديدة وحقق أهدافك مع واجهة رائعة تلهب حماسك وتدفعك للتفوق.",
+            heroTitle: "Habitly",
+            heroDescription: "ابدأ في بناء عادات جديدة وحقق أهدافك مع واجهات رائعة تلهب حماسك وتدفعك للتفوق.",
             downloadBtn: "تحميل لأندرويد",
             featuresTitle: "المميزات",
             feature1Title: "تتبع ومراقبة",
             feature1Description: "تابع روتينك اليومي بدقة مع تحليلات متكاملة.",
             feature2Title: "خطط طريقك",
             feature2Description: "خطط لتقدمك عبر خرائط طريق مفصلة وحدد معالمك.",
-            feature3Title: "شات فوري",
-            feature3Description: "تواصل مع أصدقائك في الوقت الحقيقي وشارك تقدمك.",
+            feature3Title: "تواصل فوري",
+            feature3Description: "تواصل مع أصدقائك وشارك تقدمك.",
             feature4Title: "مكافآت وإنجازات",
             feature4Description: "احصل على مكافآت واحتفل بكل نجاح تحققه.",
             feature5Title: "عادات مشتركة وتنافس",
@@ -746,24 +743,25 @@
             feature6Description: "اكتشف ميزات إضافية مثل تتبع السلاسل والمزيد التي ستدفعك للتفوق.",
             downloadTitle: "حمل الآن",
             downloadDescription: "ابدأ مع هابتلي اليوم وحول عاداتك إلى إنجازات.",
-            androidDownloadBtn: "تحميل لأندرويد",
-            footerAboutTitle: "عن هابتلي",
+            androidDownloadBtn: "تحميل Android",
+            footerAboutTitle: "عن Habitly",
             footerAboutText: "هابتلي هو تطبيق حديث لتتبع العادات مصمم لمساعدتك على بناء روتين إيجابي وتحقيق أهدافك.",
-            footerLinksTitle: "روابط سريعة",
+            footerLinksTitle: "روابط ",
             footerHome: "الرئيسية",
             footerFeatures: "المميزات",
             footerDownload: "التحميل",
             footerContact: "اتصل بنا",
             devInfo: "المطورون",
             devOne: "abd alrzaq najieb - abdlarzaqnajieb@gmail.com",
-            devTwo: "yahea dada - ",
-            devThree : "Ward ikhtiar - ",
+            devTwo: "yahea dada - dada.777.6x.outlook@gmail.com",
+            devThree: "Ward ikhtiar - wardekr@gmail.com",
             contactInfo: "لمزيد من المعلومات، لا تتردد في التواصل معنا!",
-            copyright: "© 2025 هابتلي - جميع الحقوق محفوظة"
+            copyright: " Habitly 2025 © - جميع الحقوق محفوظة"
         }
     };
 
     document.addEventListener('DOMContentLoaded', function() {
+
         // Handle animations on scroll
         const fadeElements = document.querySelectorAll('.fade-in');
 
@@ -840,7 +838,7 @@
                 }
             });
         }
-
+        updateLanguage();
         langToggle.addEventListener('click', function() {
             currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
             updateLanguage();
@@ -863,4 +861,3 @@
 </script>
 </body>
 </html>
-
