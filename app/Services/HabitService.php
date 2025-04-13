@@ -32,7 +32,7 @@ class HabitService
             'user_id' => $user->id,
             'name' => $data['name'],
             'days' => self::encodeDays($data['days']),
-            'reminder_time' => $data['reminder_time']??null,
+            'reminder_time' => (!empty($data['reminder_time'])) ? $data['reminder_time'] : null,
         ]);
 
     }
