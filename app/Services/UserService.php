@@ -12,12 +12,13 @@ class UserService
 {
     public static function createUser(array $data): User
     {
+
         return User::create([
             'name' => $data['name'],
             'password' => Hash::make($data['password']),
-            'fcm_token' => $data['fcm_token'] ?? null,
+            'fcm_token' => (!empty($data['fcm_token'])) ? $data['fcm_token'] : null,
             'email' => $data['email'],
-            'photo' => isset($data['photo']) ? NewPublicPhoto($data['photo'], 'profiles') : null,
+            'photo' => ( isset($data['photo']) && (!empty($data['photo'])) ) ? NewPublicPhoto($data['photo'], 'profiles') : null,
             'timezone' => $data['timezone'],
         ]);
     }
@@ -41,7 +42,7 @@ class UserService
 
         $user->update([
             'name' => $data['name'],
-            'photo' => $data['photo'] ?? $user->photo,
+            'photo' => (!empty($data['photo'])) ? $data['photo']: $user->photo,
         ]);
 
         return $user;
