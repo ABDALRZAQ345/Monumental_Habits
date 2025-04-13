@@ -3,7 +3,7 @@ FROM php:8.2-fpm
 
 RUN apt-get update && apt-get install -y \
     git curl libzip-dev unzip libpq-dev \
-    && docker-php-ext-install pdo pdo_mypgsql zip
+    && docker-php-ext-install pdo pdo_pgsql zip
 
 COPY . /var/www
 WORKDIR /var/www
