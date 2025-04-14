@@ -8,38 +8,3 @@ services:
     dockerfilePath: ./Dockerfile
     buildCommand: ""
     startCommand: ""
-    envVars:
-      - key: APP_ENV
-        value: production
-      - key: APP_DEBUG
-        value: false
-      - key: APP_KEY
-        value: manual
-      - key: DB_CONNECTION
-        value: mysql
-      - key: DB_HOST
-        fromService:
-          name: laravel-db
-          type: pserv
-      - key: DB_PORT
-        value: 3306
-      - key: DB_DATABASE
-        value: laravel
-      - key: DB_USERNAME
-        value: root
-      - key: DB_PASSWORD
-        value: root
-      - key: QUEUE_CONNECTION
-        value: database
-
-  - type: pserv
-    name: laravel-db
-    env: docker
-    dockerfilePath: ""
-    image:
-      url: mysql:8
-    envVars:
-      - key: MYSQL_ROOT_PASSWORD
-        value: root
-      - key: MYSQL_DATABASE
-        value: laravel

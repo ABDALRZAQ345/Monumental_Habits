@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Habit;
 use App\Models\User;
+use DateTime;
 
 class HabitService
 {
@@ -28,6 +29,10 @@ class HabitService
 
     public static function store(User $user, array $data): Habit
     {
+        if(isset($data['reminder_time']) && $data['reminder_time'] != null){
+            $time = DateTime::createFromFormat('h:i A', $data['reminder_time']);
+            $data['reminder_time'] = $time->format('H:i');
+        }
         return Habit::create([
             'user_id' => $user->id,
             'name' => $data['name'],

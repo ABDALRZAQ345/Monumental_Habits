@@ -14,7 +14,7 @@ class HabitResponse
         return response()->json([
             'status' => true,
             'user_current_date' => Carbon::now($user->timezone)->toDateString(),
-            'habit' => habitResource::make($habit->makeHidden('days')),
+            'habit' => habitResource::make($habit),
             'longest_streak' => $habit->LongestStreak(),
             'current_streak' => $habit->CurrentStreak(),
             'complete_rate' => $complete_rate = $habit->CompleteRate(),
