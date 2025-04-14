@@ -10,7 +10,7 @@ php artisan key:generate
 
 php artisan migrate --force
 php artisan queue:table
-
+php artisan storage:link
 
 php artisan queue:work --tries=3 --timeout=90 &
 exec "$@"
