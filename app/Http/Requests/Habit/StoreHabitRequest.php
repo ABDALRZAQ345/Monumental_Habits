@@ -27,7 +27,7 @@ class StoreHabitRequest extends FormRequest
             'name' => ['required', 'string', 'max:50'],
             'days' => ['required', 'array', 'max:7'],
             'days.*' => ['required', 'in:Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday'],
-            'reminder_time' => ['nullable', 'date-format:H:i'],
+            'reminder_time' => ['nullable', 'date_format:h:i A'],
         ];
     }
 

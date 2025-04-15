@@ -24,8 +24,8 @@ class HabitLog extends Model
     public function scopeOfWeek($query, $timezone = null, int $order = 0)
     {
         $timezone = $timezone ?: config('app.timezone');
-        $startOfWeek = Carbon::now($timezone)->subDays(7 * $order)->startOfWeek(Carbon::SUNDAY);
-        $endOfWeek = $startOfWeek->copy()->addDays(6);
+        $startOfWeek = Carbon::now($timezone)->subDays(7 * ($order+1));
+        $endOfWeek = $startOfWeek->copy()->addDays(7);
 
         return $query->whereBetween('date', [$startOfWeek, $endOfWeek]);
     }

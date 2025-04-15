@@ -42,7 +42,7 @@ class HabitLogController extends Controller
                 return response()->json($editable, 400);
             }
 
-            $this->habitLogService->UpdateHabitLogStatus($habitLog, $validated['status']);
+            $this->habitLogService->UpdateHabitLogStatus($habitLog,$habitLog->status ^ 1);
 
             return response()->json([
                 'status' => true,
