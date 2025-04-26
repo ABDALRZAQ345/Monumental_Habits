@@ -16,4 +16,3 @@ echo "Running migrations..."
 php artisan migrate --force
 echo "Running queue"
 php artisan queue:work --tries=3 --timeout=90 &
-
