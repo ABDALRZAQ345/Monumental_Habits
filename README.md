@@ -1,66 +1,68 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🌤️ Monumental Habits
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![PosterImage](App%20Download%20Website%20in%20Light%20Blue%20Simple%20Light%20Style.png)
 
-## About Laravel
+> **Build small habits. Achieve monumental growth.**  
+> A mindful way to track your habits and nurture self-improvement —  
+> because true transformation begins with small, consistent steps.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🧠 Overview
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Monumental Habits** is a beautifully designed **habit tracking app** built with **Flutter**, focused on helping users build consistency and mindfulness through clean UI and smooth functionality.
 
-## Learning Laravel
+The app lets you **create, track, and visualize your daily habits**, while keeping you motivated with **reminders**, **progress tracking**, and a vibrant **community** space.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+This project is inspired by the [Habit Builder UI Kit](https://www.pixeltrue.com/free-ui-kits/habit-builder-ui-kit) from PixelTrue, which we customized and redesigned — including an original **Dark Clouded Theme** created in Figma to match our **sky/cloudy** aesthetic.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## ✨ Features
 
-## Laravel Sponsors
+- 🪄 **Create and Manage Habits** — Add habits and track progress effortlessly.  
+- ⏰ **Smart Local Notifications** — Gentle daily reminders to help you stay on track.  
+- 🌙 **Light & Dark Mode** — Featuring our custom *Sky Cloudy* and *Dark Clouded* themes.  
+- 📅 **Monthly Progress Tracking** — View your consistency and improvement visually across the month.  
+- 👥 **Community Section** *(In Development)* — Connect, share progress, and chat with other users.  
+- 🔐 **Google Sign-In** — Seamless authentication with Firebase and Google integration.  
+- ☁️ **Offline Support (Planned)** — Future update to help users keep progress even without internet.  
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🎨 Design & Inspiration
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+This app’s UI was originally based on the [PixelTrue Habit Builder UI Kit](https://www.pixeltrue.com/free-ui-kits/habit-builder-ui-kit), then enhanced with:
 
-## Contributing
+- Custom **Dark Clouded Theme** (by *Yahea Dada*)  
+- Polished animations, improved responsiveness, and a calming **sky-cloud aesthetic**  
+- Intuitive UX flow for easier tracking and habit visualization  
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 🧩 Technologies Used
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Category | Tools & Packages |
+|-----------|------------------|
+| **Framework** | Flutter, Dart |
+| **State Management** | GetX |
+| **Authentication** | Firebase Auth, Google Sign-In |
+| **Database** | Cloud Firestore |
+| **Networking** | Dio, HTTP |
+| **Local Storage** | Shared Preferences |
+| **Notifications** | Flutter Local Notifications, Timezone |
+| **UI/UX** | Flutter SVG, Lottie, Confetti, Smooth Page Indicator |
+| **Utilities** | Internet Connection Checker, Flutter ScreenUtil, Table Calendar |
+| **Version Control** | Git, GitHub |
+| **Design Tools** | Figma (custom dark theme, layout editing) |
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🧑‍💻 Team & Credits
 
-## License
+**Frontend Developer & Designer:** [Yahea Dada](https://github.com/Dada6x)  
+**Backend Developer:** [abd alrzaq najieb](https://github.com/ABDALRZAQ345)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+---
+
